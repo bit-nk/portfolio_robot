@@ -195,7 +195,7 @@ export default function ExperienceSection({ hoveredSection, openSection, toggleS
       </Html>
 
       {isOpen && (
-        <group position={[0.35 + t * 0.65, 1, -0.3 - t * 0.2]} rotation={[0, -t * 0.15, 0]}>
+        <group position={[0.35 + t * 0.65, 1, -0.3 - t * 0.2]} rotation={[0, -t * 0.15, 0]} scale={0.7 + t * 0.3}>
           {/* Stack ghosts behind */}
           <StackGhost cardsAhead={cardsAhead} offset={0.04 + t * 0.04} />
 

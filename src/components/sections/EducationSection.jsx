@@ -189,7 +189,7 @@ export default function EducationSection({ hoveredSection, openSection, toggleSe
       </Html>
 
       {isOpen && (
-        <group position={[0.45 - t * 1.45, 1, -0.3 - t * 0.2]} rotation={[0, t * 0.15, 0]}>
+        <group position={[0.45 - t * 1.45, 1, -0.3 - t * 0.2]} rotation={[0, t * 0.15, 0]} scale={0.7 + t * 0.3}>
           <StackGhost cardsAhead={cardsAhead} offset={0.04 + t * 0.04} />
 
           <group>

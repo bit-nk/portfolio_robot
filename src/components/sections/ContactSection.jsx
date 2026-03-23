@@ -14,7 +14,7 @@ const ICONS = {
 
 const COLORS = ['#0a66c2', '#ea4335', '#e4e4e7']
 const POSITIONS_DESKTOP = [[-1.2, 0, 0], [0, 0, 0.3], [1.2, 0, 0]]
-const POSITIONS_MOBILE = [[-0.7, 0, 0], [0, 0, 0.2], [0.7, 0, 0]]
+const POSITIONS_MOBILE = [[-0.45, 0, 0], [0, 0, 0.15], [0.45, 0, 0]]
 
 function ContactOrb({ data, color, pos, index, targetScale, isMobile }) {
   const groupRef = useRef()
