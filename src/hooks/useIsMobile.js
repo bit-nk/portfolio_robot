@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 export function useIsMobile(breakpoint = 768) {
   const [isMobile, setIsMobile] = useState(
@@ -16,38 +16,50 @@ export function useIsMobile(breakpoint = 768) {
   return isMobile
 }
 
-// Returns a 0-1 scale factor based on viewport width
-// 1 = desktop (1200px+), 0 = smallest mobile (320px)
-// Also returns aspect ratio for layout decisions
+function calcScale() {
+  const w = window.innerWidth
+  const h = window.innerHeight
+  const aspect = w / h
+  const vw = Math.min(1, Math.max(0, (w - 320) / (1200 - 320)))
+  const vh = Math.min(1, Math.max(0, (h - 500) / (900 - 500)))
+  return {
+    vw,
+    vh,
+    aspect,
+    isPortrait: aspect < 1,
+    isMobile: w <= 768,
+    isTablet: w > 768 && w <= 1024,
+  }
+}
+
 export function useViewportScale() {
   const [scale, setScale] = useState(() => {
     if (typeof window === 'undefined') return { vw: 1, vh: 1, aspect: 16 / 9, isPortrait: false, isMobile: false, isTablet: false }
-    return calc()
+    return calcScale()
   })
 
-  function calc() {
-    const w = window.innerWidth
-    const h = window.innerHeight
-    const aspect = w / h
-    // vw: 0 at 320px, 1 at 1200px+
-    const vw = Math.min(1, Math.max(0, (w - 320) / (1200 - 320)))
-    // vh: 0 at 500px, 1 at 900px+
-    const vh = Math.min(1, Math.max(0, (h - 500) / (900 - 500)))
-    return {
-      vw,
-      vh,
-      aspect,
-      isPortrait: aspect < 1,
-      isMobile: w <= 768,
-      isTablet: w > 768 && w <= 1024,
-    }
-  }
+  const update = useCallback(() => {
+    setScale((prev) => {
+      const next = calcScale()
+      // Only update if values actually changed to avoid unnecessary re-renders
+      if (prev.vw === next.vw && prev.isMobile === next.isMobile && prev.aspect === next.aspect) return prev
+      return next
+    })
+  }, [])
 
   useEffect(() => {
-    function onResize() { setScale(calc()) }
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [])
+    window.addEventListener('resize', update)
+    window.addEventListener('orientationchange', update)
+
+    // Poll for DevTools responsive mode changes (no resize event fired)
+    const interval = setInterval(update, 500)
+
+    return () => {
+      window.removeEventListener('resize', update)
+      window.removeEventListener('orientationchange', update)
+      clearInterval(interval)
+    }
+  }, [update])
 
   return scale
 }

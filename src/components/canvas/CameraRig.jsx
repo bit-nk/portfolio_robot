@@ -77,6 +77,13 @@ export default function CameraRig({ mouseParallax, hoveredSection, openSection, 
 
     camera.position.copy(_smoothPos)
     camera.lookAt(_smoothLook)
+
+    // Dynamically update FOV based on viewport
+    const targetFov = 65 - t * 15 // 65 on mobile, 50 on desktop
+    if (Math.abs(camera.fov - targetFov) > 0.5) {
+      camera.fov = THREE.MathUtils.lerp(camera.fov, targetFov, 0.05)
+      camera.updateProjectionMatrix()
+    }
   })
 
   return null

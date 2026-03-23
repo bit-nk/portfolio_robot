@@ -54,7 +54,7 @@ export default function Robot({ position = [0, 0, 0], mouseParallax, hoveredSect
   const blue = { color: '#2563eb', metalness: 0.08, roughness: 0.5 }
 
   return (
-    <group position={position} scale={2.5 + vs.vw * 2}>
+    <group position={position} scale={3.8 + vs.vw * 0.7}>
 
       {/* ════════════ BODY ════════════ */}
       {/* Main torso — rounded, Astro Bot style */}
@@ -213,43 +213,71 @@ export default function Robot({ position = [0, 0, 0], mouseParallax, hoveredSect
         ))}
       </group>
 
-      {/* ════════════ SHOULDERS (blue accents) ════════════ */}
+      {/* ════════════ ARMS (seamless joints) ════════════ */}
       {[-1, 1].map((side, i) => (
-        <group key={i} position={[side * 0.52, 0.2, 0]}>
-          <mesh>
+        <group key={i} position={[side * 0.5, 0.15, 0]} rotation={[0, 0, side * 0.12]}>
+          {/* Shoulder ball — overlaps with body */}
+          <mesh position={[side * 0.04, 0.02, 0]}>
             <sphereGeometry args={[0.1, 16, 16]} />
-            <meshStandardMaterial {...dark} />
+            <meshStandardMaterial {...shiny} />
           </mesh>
-          <mesh position={[side * 0.02, 0, 0]}>
-            <sphereGeometry args={[0.08, 12, 12]} />
+          {/* Shoulder accent ring */}
+          <mesh position={[side * 0.04, 0.02, 0]} rotation={[0, 0, side * 0.2]}>
+            <torusGeometry args={[0.08, 0.008, 12, 24]} rotation={[Math.PI / 2, 0, 0]} />
             <meshStandardMaterial {...blue} />
           </mesh>
-        </group>
-      ))}
 
-      {/* ════════════ ARMS (static, resting at sides) ════════════ */}
-      {[-1, 1].map((side, i) => (
-        <group key={i} position={[side * 0.55, 0.1, 0]} rotation={[0, 0, side * 0.15]}>
-          {/* Upper arm */}
-          <mesh position={[side * 0.05, -0.18, 0]}>
-            <capsuleGeometry args={[0.06, 0.2, 8, 16]} />
+          {/* Upper arm — overlaps shoulder ball */}
+          <mesh position={[side * 0.04, -0.14, 0]}>
+            <capsuleGeometry args={[0.065, 0.18, 8, 16]} />
             <meshStandardMaterial {...shiny} />
           </mesh>
-          {/* Elbow */}
-          <mesh position={[side * 0.05, -0.35, 0]}>
-            <sphereGeometry args={[0.055, 12, 12]} />
-            <meshStandardMaterial {...dark} />
-          </mesh>
-          {/* Forearm */}
-          <mesh position={[side * 0.05, -0.52, 0]}>
-            <capsuleGeometry args={[0.05, 0.18, 8, 16]} />
-            <meshStandardMaterial {...shiny} />
-          </mesh>
-          {/* Hand */}
-          <mesh position={[side * 0.05, -0.68, 0]}>
-            <sphereGeometry args={[0.05, 12, 12]} />
+          {/* Upper arm detail strip */}
+          <mesh position={[side * 0.04, -0.14, 0.06]}>
+            <boxGeometry args={[0.03, 0.16, 0.01]} />
             <meshStandardMaterial {...blue} />
           </mesh>
+
+          {/* Elbow joint — overlaps both arm segments */}
+          <mesh position={[side * 0.04, -0.3, 0]}>
+            <sphereGeometry args={[0.065, 16, 16]} />
+            <meshStandardMaterial {...dark} />
+          </mesh>
+          {/* Elbow accent */}
+          <mesh position={[side * 0.04, -0.3, 0]}>
+            <torusGeometry args={[0.05, 0.006, 8, 16]} rotation={[Math.PI / 2, 0, 0]} />
+            <meshStandardMaterial color="#38bdf8" emissive="#38bdf8" emissiveIntensity={0.4} toneMapped={false} />
+          </mesh>
+
+          {/* Forearm — overlaps elbow */}
+          <mesh position={[side * 0.04, -0.46, 0]}>
+            <capsuleGeometry args={[0.055, 0.2, 8, 16]} />
+            <meshStandardMaterial {...shiny} />
+          </mesh>
+          {/* Forearm detail strip */}
+          <mesh position={[side * 0.04, -0.46, 0.05]}>
+            <boxGeometry args={[0.025, 0.15, 0.01]} />
+            <meshStandardMaterial {...dark} />
+          </mesh>
+
+          {/* Wrist joint */}
+          <mesh position={[side * 0.04, -0.6, 0]}>
+            <sphereGeometry args={[0.05, 12, 12]} />
+            <meshStandardMaterial {...dark} />
+          </mesh>
+
+          {/* Hand */}
+          <mesh position={[side * 0.04, -0.68, 0]}>
+            <sphereGeometry args={[0.055, 16, 16]} />
+            <meshStandardMaterial {...blue} />
+          </mesh>
+          {/* Finger hints */}
+          {[-1, 0, 1].map((f, fi) => (
+            <mesh key={fi} position={[side * 0.04 + f * 0.02, -0.74, 0.02]}>
+              <capsuleGeometry args={[0.012, 0.03, 4, 8]} />
+              <meshStandardMaterial {...blue} />
+            </mesh>
+          ))}
         </group>
       ))}
 

@@ -14,7 +14,7 @@ const ICONS = {
 
 const COLORS = ['#0a66c2', '#ea4335', '#e4e4e7']
 const POSITIONS_DESKTOP = [[-1.2, 0, 0], [0, 0, 0.3], [1.2, 0, 0]]
-const POSITIONS_MOBILE = [[-0.45, 0, 0], [0, 0, 0.15], [0.45, 0, 0]]
+const POSITIONS_MOBILE = [[-0.5, 0, 0], [0, 0, 0.15], [0.5, 0, 0]]
 
 function ContactOrb({ data, color, pos, index, targetScale, isMobile }) {
   const groupRef = useRef()
@@ -50,7 +50,7 @@ function ContactOrb({ data, color, pos, index, targetScale, isMobile }) {
           onPointerLeave={() => { hovered.current = false; setShowTooltip(false); document.body.style.cursor = 'auto' }}
           onClick={() => window.open(data.href, data.href.startsWith('mailto') ? '_self' : '_blank')}
         >
-          <icosahedronGeometry args={[0.3, 1]} />
+          <icosahedronGeometry args={[isMobile ? 0.2 : 0.3, 1]} />
           <meshStandardMaterial
             color={color}
             emissive={color}
@@ -64,7 +64,7 @@ function ContactOrb({ data, color, pos, index, targetScale, isMobile }) {
       </Float>
 
       {/* Label */}
-      <Html position={[0, isGmail ? 0.5 : -0.55, 0]} center style={{ pointerEvents: 'auto' }}>
+      <Html position={[0, isGmail ? (isMobile ? 0.35 : 0.5) : (isMobile ? -0.38 : -0.55), 0]} center style={{ pointerEvents: 'auto' }}>
         <a
           className="contact-orb-label"
           onClick={(e) => e.stopPropagation()}
@@ -82,7 +82,7 @@ function ContactOrb({ data, color, pos, index, targetScale, isMobile }) {
 
       {/* Email tooltip — always visible on mobile, hover on desktop */}
       {isGmail && (showTooltip || isMobile) && (
-        <Html position={[0, 0.75, 0]} center style={{ pointerEvents: 'none' }}>
+        <Html position={[0, isMobile ? 0.55 : 0.75, 0]} center style={{ pointerEvents: 'none' }}>
           <div className="holo-tooltip">
             <div className="holo-tooltip-label">EMAIL</div>
             <div className="holo-tooltip-value">nirvikkc@gmail.com</div>
@@ -140,7 +140,7 @@ export default function ContactSection({ hoveredSection, openSection, toggleSect
 
       {/* 3 orbs — only rendered when open */}
       {isOpen && (
-        <group position={[0, 0.6, 0.5]}>
+        <group position={[0, isMobile ? 0.3 : 0.6, 0.5]}>
           {contacts.map((c, i) => (
             <ContactOrb
               key={c.id}

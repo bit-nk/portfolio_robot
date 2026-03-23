@@ -7,6 +7,7 @@ import Robot from './Robot'
 import GearCluster from '../decorations/GearCluster'
 import CircuitLines from '../decorations/CircuitLines'
 import EnergyRing from '../decorations/EnergyRing'
+import FloatingParts from '../decorations/FloatingParts'
 import IntroSection from '../sections/IntroSection'
 import ExperienceSection from '../sections/ExperienceSection'
 import EducationSection from '../sections/EducationSection'
@@ -34,7 +35,7 @@ export default function Scene({ mouseParallax, hoveredSection, openSection, togg
       <CameraRig mouseParallax={mouseParallax} hoveredSection={hoveredSection} openSection={openSection} vs={vs} />
 
       <Robot
-        position={[0, lerp(-2, -3.5, t), lerp(3, 1, t)]}
+        position={[0, lerp(-2.8, -3.5, t), lerp(3, 1, t)]}
         mouseParallax={mouseParallax}
         hoveredSection={hoveredSection}
         vs={vs}
@@ -54,6 +55,8 @@ export default function Scene({ mouseParallax, hoveredSection, openSection, togg
       {openSection !== 'contact' && (
         <EnergyRing position={[0, lerp(1.2, 1.5, t), lerp(8, 7, t)]} radius={lerp(0.5, 0.9, t)} color="#a78bfa" speed={0.2} />
       )}
+
+      <FloatingParts count={15} isMobile={t < 0.5} />
 
       <Suspense fallback={null}>
         <IntroSection vs={vs} />

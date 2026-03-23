@@ -7,7 +7,7 @@ import * as THREE from 'three'
 const PANEL_W = 3.4
 const PANEL_H = 2.4
 
-function StackGhost({ cardsAhead, color = '#06b6d4', offset = 0.05 }) {
+function StackGhost({ cardsAhead, color = '#06b6d4', offset = 0.05, ws = 0.85, hs = 0.60, shiftX = 0 }) {
   const layers = Math.min(cardsAhead, 3)
   if (layers <= 0) return null
   return (
@@ -15,13 +15,13 @@ function StackGhost({ cardsAhead, color = '#06b6d4', offset = 0.05 }) {
       {Array.from({ length: layers }).map((_, i) => {
         const layer = i + 1
         return (
-          <group key={layer} position={[-offset * layer, 0, -0.15 * layer]}>
+          <group key={layer} position={[-offset * layer + shiftX, 0, -0.15 * layer]}>
             <mesh>
-              <planeGeometry args={[PANEL_W * 0.85, PANEL_H * 0.60]} />
+              <planeGeometry args={[PANEL_W * ws, PANEL_H * hs]} />
               <meshStandardMaterial color="#1a2a3a" transparent opacity={0.3 - i * 0.07} side={THREE.DoubleSide} />
             </mesh>
             <mesh>
-              <planeGeometry args={[PANEL_W * 0.85 + 0.04, PANEL_H * 0.60 + 0.04]} />
+              <planeGeometry args={[PANEL_W * ws + 0.04, PANEL_H * hs + 0.04]} />
               <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.6 - i * 0.15} transparent opacity={0.3 - i * 0.08} side={THREE.DoubleSide} toneMapped={false} />
             </mesh>
           </group>
@@ -189,8 +189,8 @@ export default function EducationSection({ hoveredSection, openSection, toggleSe
       </Html>
 
       {isOpen && (
-        <group position={[0.45 - t * 1.45, 1, -0.3 - t * 0.2]} rotation={[0, t * 0.15, 0]} scale={0.7 + t * 0.3}>
-          <StackGhost cardsAhead={cardsAhead} offset={0.04 + t * 0.04} />
+        <group position={[0.3 - t * 1.3, 1, -0.3 - t * 0.2]} rotation={[0, t * 0.15, 0]} scale={0.85 + t * 0.15}>
+          <StackGhost cardsAhead={cardsAhead} offset={0.04 + t * 0.04} ws={0.68 + t * 0.17} hs={0.55 + t * 0.05} shiftX={-0.33 + t * 0.33} />
 
           <group>
             <PanelGlass glowRef={glowRef} />

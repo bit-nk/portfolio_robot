@@ -428,8 +428,8 @@ html, body, #root {
 
 @media (max-width: 768px) {
   .holo-screen {
-    width: min(320px, 82vw);
-    padding: 14px 16px;
+    width: min(380px, 92vw);
+    padding: 16px 18px;
   }
   .holo-counter { font-size: 9px; }
   .holo-date { font-size: 10px; }
@@ -454,8 +454,8 @@ html, body, #root {
 
 @media (max-width: 480px) {
   .holo-screen {
-    width: min(260px, 78vw);
-    padding: 12px 14px;
+    width: min(340px, 92vw);
+    padding: 14px 16px;
   }
   .holo-role, .holo-degree { font-size: 13px; }
   .holo-details li { font-size: 9px; }
