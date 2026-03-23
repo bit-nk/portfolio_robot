@@ -50,7 +50,7 @@ export default function Scene({ mouseParallax, hoveredSection, openSection, togg
       {t > 0.5 && <CircuitLines position={[-3, 0, -6]} color="#06b6d4" />}
 
       {/* Energy rings — positions interpolated */}
-      <EnergyRing position={[lerp(0.8, 4, t), lerp(3, 1.5, t), lerp(5, 2, t)]} radius={lerp(0.6, 1.2, t)} color="#818cf8" speed={0.3} />
+      <EnergyRing position={[lerp(0.8, 4, t), lerp(3, 1.5, t), lerp(5, 2, t)]} radius={lerp(0.75, 1.2, t)} color="#818cf8" speed={0.3} />
       <EnergyRing position={[lerp(-0.8, -5, t), lerp(3, 1.5, t), lerp(5, 3, t)]} radius={lerp(0.6, 1.0, t)} color="#06b6d4" speed={0.25} />
       {openSection !== 'contact' && (
         <EnergyRing position={[0, lerp(1.2, 1.5, t), lerp(8, 7, t)]} radius={lerp(0.5, 0.9, t)} color="#a78bfa" speed={0.2} />

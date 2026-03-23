@@ -39,12 +39,12 @@ export default function App() {
   const fov = 65 - vs.vw * 15
 
   const toggleSection = useCallback((key) => {
-    closeLock.current = Date.now() + 800
+    closeLock.current = Date.now() + 1200
     setOpenSection((prev) => (prev === key ? null : key))
   }, [])
 
   const lockClose = useCallback(() => {
-    closeLock.current = Date.now() + 800
+    closeLock.current = Date.now() + 1200
   }, [])
 
   const closeSection = useCallback(() => {}, [])

@@ -120,7 +120,7 @@ export default function ContactSection({ hoveredSection, openSection, toggleSect
             onPointerLeave={() => { isHovered.current = false; hoveredSection.current = 'none'; document.body.style.cursor = 'auto' }}
             onClick={(e) => { e.stopPropagation(); toggleSection('contact') }}
           >
-            <icosahedronGeometry args={[0.3, 2]} />
+            <icosahedronGeometry args={[0.25, 2]} />
             <meshStandardMaterial color="#a78bfa" emissive="#a78bfa" emissiveIntensity={1.5} wireframe transparent opacity={0.7} toneMapped={false} />
           </mesh>
           <mesh visible={false}

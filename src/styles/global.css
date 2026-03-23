@@ -334,6 +334,14 @@ html, body, #root {
   animation: scrollBounce 1.5s ease-in-out infinite;
 }
 
+.mobile-hint { display: none; }
+.desktop-hint { display: inline; }
+
+@media (max-width: 768px) {
+  .mobile-hint { display: inline; }
+  .desktop-hint { display: none; }
+}
+
 @keyframes scrollBounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-2px); }
@@ -437,8 +445,9 @@ html, body, #root {
   .holo-company, .holo-school { font-size: 11px; }
   .holo-details li { font-size: 10px; line-height: 1.5; }
   .holo-meta, .holo-project { font-size: 9px; }
-  .holo-btn { font-size: 7px; padding: 3px 7px; }
-  .holo-scroll-label { font-size: 7px; }
+  .holo-btn { font-size: 10px; padding: 8px 14px; min-height: 32px; min-width: 60px; }
+  .holo-scroll-label { font-size: 8px; }
+  .holo-footer { margin-top: 14px; padding-top: 10px; }
 
   .hotspot-label { font-size: 9px; letter-spacing: 0.15em; }
 

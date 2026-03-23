@@ -53,7 +53,7 @@ function PanelContent({ data, index, total, onNext, onPrev }) {
         </div>
         <div className="holo-footer">
           <button className={`holo-btn ${index <= 0 ? 'disabled' : ''}`} onClick={onPrev} disabled={index <= 0}>◀ PREV</button>
-          <span className="holo-scroll-label"><span className="scroll-icon">⟳</span>scroll to flip</span>
+          <span className="holo-scroll-label"><span className="scroll-icon">⟳</span><span className="desktop-hint">scroll to flip</span><span className="mobile-hint">swipe to flip</span></span>
           <button className={`holo-btn ${index >= total - 1 ? 'disabled' : ''}`} onClick={onNext} disabled={index >= total - 1}>NEXT ▶</button>
         </div>
       </div>
@@ -158,11 +158,43 @@ export default function ExperienceSection({ hoveredSection, openSection, toggleS
     else if (e.deltaY < -15) goPrev()
   }, [isOpen, goNext, goPrev, peelData])
 
+  // Touch swipe support
+  const touchStart = useRef({ x: 0, y: 0 })
+  const onTouchStart = useCallback((e) => {
+    if (!isOpen) return
+    touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+  }, [isOpen])
+
+  const onTouchEnd = useCallback((e) => {
+    if (!isOpen || scrollCooldown.current || peelData) return
+    const dx = e.changedTouches[0].clientX - touchStart.current.x
+    // Swipe left = next
+    if (dx < -40) {
+      scrollCooldown.current = true
+      setTimeout(() => { scrollCooldown.current = false }, 400)
+      lockClose()
+      goNext()
+    }
+    // Swipe right = prev
+    else if (dx > 40) {
+      scrollCooldown.current = true
+      setTimeout(() => { scrollCooldown.current = false }, 400)
+      lockClose()
+      goPrev()
+    }
+  }, [isOpen, goNext, goPrev, peelData, lockClose])
+
   useEffect(() => {
     if (!isOpen) return
     window.addEventListener('wheel', onWheel)
-    return () => window.removeEventListener('wheel', onWheel)
-  }, [isOpen, onWheel])
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchend', onTouchEnd)
+    return () => {
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchend', onTouchEnd)
+    }
+  }, [isOpen, onWheel, onTouchStart, onTouchEnd])
 
   const currentData = experience[currentIndex]
   const cardsAhead = experience.length - 1 - currentIndex
