@@ -1,0 +1,463 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #f0f0f0;
+  font-family: 'Inter', sans-serif;
+  color: #1e293b;
+  touch-action: manipulation;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+}
+
+.canvas-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ═══════════════════════════════════════
+   Close Overlay (click anywhere to zoom out)
+   ═══════════════════════════════════════ */
+.close-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 28px;
+}
+
+.close-hint {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(100, 116, 139, 0.5);
+  padding: 6px 18px;
+  border: 1px solid rgba(100, 116, 139, 0.15);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: rgba(240, 240, 240, 0.5);
+  pointer-events: none;
+  animation: hintFadeIn 0.6s ease-out;
+}
+
+@keyframes hintFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════════════
+   Hotspot Label
+   ═══════════════════════════════════════ */
+.hotspot-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #64748b;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* ═══════════════════════════════════════
+   Holographic Screen (Iron Man style)
+   ═══════════════════════════════════════ */
+.holo-screen {
+  background: linear-gradient(
+    135deg,
+    rgba(220, 220, 240, 0.85) 0%,
+    rgba(225, 230, 240, 0.8) 50%,
+    rgba(220, 220, 240, 0.85) 100%
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(129, 140, 248, 0.2);
+  border-radius: 4px;
+  padding: 18px 22px;
+  width: 400px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 2px 20px rgba(129, 140, 248, 0.06);
+}
+
+/* Ensure holo overlays sit above the close-overlay */
+.holo-screen, .holo-screen * {
+  pointer-events: auto;
+}
+
+.contact-orb-label {
+  position: relative;
+  z-index: 5;
+}
+
+/* Scan line — very slow and faint */
+.holo-screen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(129, 140, 248, 0.12), transparent);
+  animation: scanLine 10s linear infinite;
+  z-index: 10;
+}
+
+/* CRT lines — barely perceptible texture */
+.holo-screen::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: repeating-linear-gradient(
+    0deg, transparent, transparent 4px,
+    rgba(129, 140, 248, 0.003) 4px,
+    rgba(129, 140, 248, 0.003) 8px
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Cyan variant for education */
+.holo-screen.cyan {
+  border-color: rgba(6, 182, 212, 0.2);
+  box-shadow: 0 2px 20px rgba(6, 182, 212, 0.06);
+}
+.holo-screen.cyan::before {
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.12), transparent);
+}
+.holo-screen.cyan .holo-counter,
+.holo-screen.cyan .holo-date,
+.holo-screen.cyan .holo-btn { color: rgba(6, 182, 212, 0.6); }
+.holo-screen.cyan .holo-dot.active {
+  background: #06b6d4;
+  box-shadow: 0 0 6px rgba(6, 182, 212, 0.6);
+}
+.holo-screen.cyan .holo-details li::before { color: #06b6d4; }
+.holo-screen.cyan .holo-btn:hover:not(.disabled) {
+  background: rgba(6, 182, 212, 0.1);
+  border-color: rgba(6, 182, 212, 0.4);
+  color: #06b6d4;
+}
+
+@keyframes holoIn {
+  from {
+    opacity: 0;
+    transform: scaleY(0.9) scaleX(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1) scaleX(1);
+  }
+}
+
+@keyframes scanLine {
+  from { top: -1px; }
+  to { top: 100%; }
+}
+
+/* Header */
+.holo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(129, 140, 248, 0.1);
+}
+
+.holo-counter {
+  font-size: 10px;
+  font-family: 'Space Grotesk', monospace;
+  letter-spacing: 0.15em;
+  color: rgba(129, 140, 248, 0.5);
+}
+
+.holo-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.holo-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(129, 140, 248, 0.15);
+  transition: all 0.3s ease;
+}
+
+.holo-dot.active {
+  background: #818cf8;
+  box-shadow: 0 0 6px rgba(129, 140, 248, 0.5);
+}
+
+/* Body */
+.holo-body {
+  min-height: 100px;
+}
+
+.holo-date {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #818cf8;
+  margin-bottom: 3px;
+}
+
+.holo-role {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.3;
+}
+
+.holo-company {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.holo-details {
+  list-style: none;
+  padding: 0;
+}
+
+.holo-details li {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #475569;
+  padding-left: 12px;
+  position: relative;
+  margin-bottom: 3px;
+}
+
+.holo-details li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: #818cf8;
+  font-size: 9px;
+}
+
+.holo-degree {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.3;
+}
+
+.holo-school {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.holo-meta {
+  font-size: 11px;
+  color: #06b6d4;
+  letter-spacing: 0.05em;
+}
+
+.holo-project {
+  font-size: 11px;
+  color: #94a3b8;
+  font-style: italic;
+  margin-top: 5px;
+}
+
+/* Footer nav */
+.holo-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(129, 140, 248, 0.1);
+}
+
+.holo-btn {
+  background: none;
+  border: 1px solid rgba(129, 140, 248, 0.15);
+  color: rgba(129, 140, 248, 0.6);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  padding: 3px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Space Grotesk', monospace;
+}
+
+.holo-btn:hover:not(.disabled) {
+  background: rgba(129, 140, 248, 0.08);
+  border-color: rgba(129, 140, 248, 0.4);
+  color: #818cf8;
+}
+
+.holo-btn.disabled {
+  opacity: 0.2;
+  cursor: default;
+}
+
+.holo-scroll-label {
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  color: rgba(129, 140, 248, 0.45);
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  animation: pulseHint 2s ease-in-out infinite;
+}
+
+.scroll-icon {
+  font-size: 12px;
+  animation: scrollBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@keyframes pulseHint {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.9; }
+}
+
+/* ═══════════════════════════════════════
+   Contact Orb Labels
+   ═══════════════════════════════════════ */
+.contact-orb-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.contact-orb-label:hover {
+  color: #818cf8;
+  transform: scale(1.1);
+}
+
+.contact-orb-label span {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+/* Holographic tooltip — light blue */
+.holo-tooltip {
+  background: linear-gradient(135deg, rgba(191, 219, 254, 0.85) 0%, rgba(224, 242, 254, 0.9) 100%);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 4px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  animation: tooltipOpen 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 16px rgba(59, 130, 246, 0.12);
+  transform-origin: bottom center;
+}
+
+.holo-tooltip::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent);
+}
+
+.holo-tooltip-label {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  color: rgba(37, 99, 235, 0.7);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.holo-tooltip-value {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: #1e3a5f;
+  font-weight: 500;
+}
+
+@keyframes tooltipOpen {
+  from { opacity: 0; transform: scaleY(0) scaleX(0.5); }
+  60% { transform: scaleY(1.05) scaleX(1.02); }
+  to { opacity: 1; transform: scaleY(1) scaleX(1); }
+}
+
+@media (max-width: 1024px) {
+  .holo-screen {
+    width: min(380px, 85vw);
+    padding: 16px 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .holo-screen {
+    width: min(320px, 82vw);
+    padding: 14px 16px;
+  }
+  .holo-counter { font-size: 9px; }
+  .holo-date { font-size: 10px; }
+  .holo-role, .holo-degree { font-size: 14px; }
+  .holo-company, .holo-school { font-size: 11px; }
+  .holo-details li { font-size: 10px; line-height: 1.5; }
+  .holo-meta, .holo-project { font-size: 9px; }
+  .holo-btn { font-size: 7px; padding: 3px 7px; }
+  .holo-scroll-label { font-size: 7px; }
+
+  .hotspot-label { font-size: 9px; letter-spacing: 0.15em; }
+
+  .contact-orb-label span { font-size: 8px; }
+  .contact-orb-label svg { width: 18px; height: 18px; }
+
+  .holo-tooltip { padding: 6px 10px; }
+  .holo-tooltip-label { font-size: 7px; }
+  .holo-tooltip-value { font-size: 10px; }
+
+  .close-hint { font-size: 9px; padding: 5px 14px; }
+}
+
+@media (max-width: 480px) {
+  .holo-screen {
+    width: min(260px, 78vw);
+    padding: 12px 14px;
+  }
+  .holo-role, .holo-degree { font-size: 13px; }
+  .holo-details li { font-size: 9px; }
+  .holo-company, .holo-school { font-size: 10px; }
+}
