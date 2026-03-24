@@ -48,7 +48,10 @@ function ContactOrb({ data, color, pos, index, targetScale, isMobile }) {
           ref={meshRef}
           onPointerEnter={() => { hovered.current = true; setShowTooltip(true); document.body.style.cursor = 'pointer' }}
           onPointerLeave={() => { hovered.current = false; setShowTooltip(false); document.body.style.cursor = 'auto' }}
-          onClick={() => window.open(data.href, data.href.startsWith('mailto') ? '_self' : '_blank')}
+          onClick={() => {
+            const w = window.open(data.href, data.href.startsWith('mailto') ? '_self' : '_blank', 'noopener,noreferrer')
+            if (w) w.opener = null
+          }}
         >
           <icosahedronGeometry args={[isMobile ? 0.2 : 0.3, 1]} />
           <meshStandardMaterial
@@ -73,7 +76,7 @@ function ContactOrb({ data, color, pos, index, targetScale, isMobile }) {
           onMouseLeave={() => setShowTooltip(false)}
           href={data.href}
           target={data.href.startsWith('mailto') ? '_self' : '_blank'}
-          rel="noopener"
+          rel="noopener noreferrer"
         >
           {ICONS[data.icon]}
           <span>{data.label}</span>

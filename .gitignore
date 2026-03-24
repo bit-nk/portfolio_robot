@@ -5,3 +5,17 @@ dist
 assets/cv/
 .c*/
 !.github/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Editor configs
+.vscode/
+.idea/
+
+# OS files
+Thumbs.db
+*.swp
+*.swo
