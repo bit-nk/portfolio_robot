@@ -17,9 +17,9 @@ export default function Robot({ position = [0, 0, 0], mouseParallax, hoveredSect
 
     // ── Head tracks mouse ──
     if (headRef.current) {
-      headRef.current.rotation.y = THREE.MathUtils.lerp(headRef.current.rotation.y, mx * 0.4, 0.04)
-      headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, my * 0.15, 0.04)
-      headRef.current.rotation.z = THREE.MathUtils.lerp(headRef.current.rotation.z, mx * -0.06, 0.03)
+      headRef.current.rotation.y = THREE.MathUtils.lerp(headRef.current.rotation.y, mx * 0.8, 0.05)
+      headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, my * 0.7, 0.05)
+      headRef.current.rotation.z = THREE.MathUtils.lerp(headRef.current.rotation.z, mx * -0.12, 0.04)
     }
 
     // ── Eyes glow on hover — traverse all pixel meshes ──
