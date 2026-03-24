@@ -4,7 +4,6 @@ import { Component, useRef, useState, useCallback, useEffect } from 'react'
 import Scene from './components/canvas/Scene'
 import { useMouseParallax } from './hooks/useMouseParallax'
 import { useViewportScale } from './hooks/useIsMobile'
-import * as THREE from 'three'
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -63,19 +62,9 @@ export default function App() {
       <div className="canvas-wrapper">
         <Canvas
           camera={{ fov, near: 0.1, far: 100, position: [0, 3, 12] }}
-          gl={{
-            antialias: vs.vw > 0.5,
-            alpha: false,
-            powerPreference: 'default',
-            failIfMajorPerformanceCaveat: false,
-          }}
+          gl={{ antialias: vs.vw > 0.5, alpha: false }}
           eventPrefix="client"
           dpr={vs.isMobile ? 1 : [1, 2]}
-          fallback={<div style={{ width: '100vw', height: '100vh', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Inter, sans-serif', color: '#64748b' }}>Loading 3D scene...</div>}
-          onCreated={({ gl }) => {
-            // Force WebGL1 compatibility on mobile
-            gl.outputColorSpace = THREE.SRGBColorSpace
-          }}
         >
           <color attach="background" args={['#f0f0f0']} />
           <AdaptiveDpr pixelated />
