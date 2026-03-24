@@ -6,14 +6,16 @@ const D = {
   default: { pos: [0, 3, 12], look: [0, 1.5, 0] },
   experience: { pos: [6, 2.5, 6], look: [5.5, 2, 1.5] },
   education: { pos: [-6, 2.5, 7], look: [-5.5, 2, 2.5] },
-  contact: { pos: [0, 2.5, 11], look: [0, 2, 8] },
+  skills: { pos: [3, 1, 8], look: [2, 0.5, 4] },
+  contact: { pos: [-3, 1.5, 10], look: [-3, 1, 6] },
 }
 
 const M = {
   default: { pos: [0, 3, 12], look: [0, 1.5, 2] },
-  experience: { pos: [0.8, 4, 9], look: [0.8, 4, 5] },
-  education: { pos: [-0.8, 4, 9], look: [-0.8, 4, 5] },
-  contact: { pos: [0, 1.5, 11], look: [0, 1, 7] },
+  experience: { pos: [1, 4, 9], look: [1, 4, 4] },
+  education: { pos: [-1, 4, 9], look: [-1, 4, 4] },
+  skills: { pos: [1, 2.5, 10], look: [1, 2, 5] },
+  contact: { pos: [-1, 2.5, 10], look: [-1, 2, 6] },
 }
 
 function lerpArr(a, b, t) {

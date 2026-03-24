@@ -1,10 +1,8 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html, Float } from '@react-three/drei'
-import { experience } from '../../utils/data'
+import { skills } from '../../utils/data'
 import * as THREE from 'three'
-
-// Horizontal spacing between cards — will be scaled by viewport
 
 function SliderCard({ data, index, total, activeIndex, cardGap }) {
   const isActive = index === activeIndex
@@ -14,8 +12,8 @@ function SliderCard({ data, index, total, activeIndex, cardGap }) {
     <group position={[index * cardGap, 0, 0]}>
       {stepDist <= 1 && (
         <Html transform distanceFactor={2.8} position={[0, 0, 0]}
-          style={{ pointerEvents: isActive ? 'auto' : 'none', width: '460px' }}>
-          <div className={`holo-screen ${isActive ? '' : 'holo-inactive'}`}
+          style={{ pointerEvents: isActive ? 'auto' : 'none', width: '420px' }}>
+          <div className={`holo-screen skills ${isActive ? '' : 'holo-inactive'}`}
             onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
             <div className="holo-header">
               <span className="holo-counter">{String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span>
@@ -26,12 +24,12 @@ function SliderCard({ data, index, total, activeIndex, cardGap }) {
               </div>
             </div>
             <div className="holo-body">
-              <div className="holo-date">{data.date}</div>
-              <div className="holo-role">{data.role}</div>
-              <div className="holo-company">{data.company}</div>
-              <ul className="holo-details">
-                {data.details.map((d, i) => <li key={i}>{d}</li>)}
-              </ul>
+              <div className="holo-skill-category">{data.category}</div>
+              <div className="holo-skill-items">
+                {data.items.map((item, i) => (
+                  <span key={i} className="holo-skill-tag">{item}</span>
+                ))}
+              </div>
             </div>
             {isActive && (
               <div className="holo-footer">
@@ -49,18 +47,18 @@ function SliderCard({ data, index, total, activeIndex, cardGap }) {
   )
 }
 
-export default function ExperienceSection({ hoveredSection, openSection, toggleSection, lockClose, vs }) {
+export default function SkillsSection({ hoveredSection, openSection, toggleSection, lockClose, vs }) {
   const t = vs.vw
   const isHovered = useRef(false)
   const [activeIndex, setActiveIndex] = useState(0)
-  const isOpen = openSection === 'experience'
+  const isOpen = openSection === 'skills'
 
   const sliderRef = useRef()
   const targetX = useRef(0)
   const currentX = useRef(0)
 
-  const total = experience.length
-  const cardGap = 3 + t * 1 // 3 on mobile, 4 on desktop
+  const total = skills.length
+  const cardGap = 3 + t * 1
 
   useEffect(() => {
     if (isOpen) {
@@ -72,7 +70,7 @@ export default function ExperienceSection({ hoveredSection, openSection, toggleS
 
   useEffect(() => {
     targetX.current = -activeIndex * cardGap
-  }, [activeIndex])
+  }, [activeIndex, cardGap])
 
   useFrame(() => {
     if (!sliderRef.current || !isOpen) return
@@ -160,41 +158,38 @@ export default function ExperienceSection({ hoveredSection, openSection, toggleS
     }
   }, [isOpen, onWheel, onMouseDown, onMouseMove, onMouseUp, onTouchStart, onTouchEnd])
 
-
   return (
-    <group position={[1 + t * 4, 3.2 - t * 0.2, 4 - t * 3]}>
-      <group position={[0, 0.25, 0]}>
+    <group position={[lerp(1, 2, t), lerp(0.5, 1, t), lerp(5, 4, t)]}>
       <Float speed={2} rotationIntensity={0.1} floatIntensity={0.15}>
         <mesh
-          onPointerEnter={() => { isHovered.current = true; hoveredSection.current = 'experience'; document.body.style.cursor = 'pointer' }}
+          onPointerEnter={() => { isHovered.current = true; hoveredSection.current = 'skills'; document.body.style.cursor = 'pointer' }}
           onPointerLeave={() => { isHovered.current = false; hoveredSection.current = 'none'; document.body.style.cursor = 'auto' }}
-          onClick={(e) => { e.stopPropagation(); toggleSection('experience') }}
+          onClick={(e) => { e.stopPropagation(); toggleSection('skills') }}
         >
-          <icosahedronGeometry args={[0.35 + t * 0.1, 2]} />
-          <meshStandardMaterial color="#818cf8" emissive="#818cf8" emissiveIntensity={1.5} wireframe transparent opacity={0.7} toneMapped={false} />
+          <icosahedronGeometry args={[0.35, 2]} />
+          <meshStandardMaterial color="#f59e0b" emissive="#f59e0b" emissiveIntensity={1.5} wireframe transparent opacity={0.7} toneMapped={false} />
         </mesh>
         <mesh visible={false}
-          onPointerEnter={() => { isHovered.current = true; hoveredSection.current = 'experience'; document.body.style.cursor = 'pointer' }}
+          onPointerEnter={() => { isHovered.current = true; hoveredSection.current = 'skills'; document.body.style.cursor = 'pointer' }}
           onPointerLeave={() => { isHovered.current = false; hoveredSection.current = 'none'; document.body.style.cursor = 'auto' }}
-          onClick={(e) => { e.stopPropagation(); toggleSection('experience') }}
+          onClick={(e) => { e.stopPropagation(); toggleSection('skills') }}
         >
           <sphereGeometry args={[0.8, 12, 12]} />
           <meshBasicMaterial />
         </mesh>
       </Float>
-      </group>
 
       <Html position={[0, -0.8, 0]} center style={{ pointerEvents: 'none' }}>
-        <div className="hotspot-label">EXPERIENCE</div>
+        <div className="hotspot-label">SKILLS</div>
       </Html>
 
       {isOpen && (
-        <group position={[0 + t * 1, 0, -0.3 - t * 0.2]} scale={0.75 + t * 0.0}>
+        <group position={[-0.2 + t * 0.7, 0, -0.3 - t * 0.2]} scale={0.75 + t * 0.0}>
           <group ref={sliderRef}>
-            {experience.map((exp, i) => (
+            {skills.map((skill, i) => (
               <SliderCard
-                key={exp.id}
-                data={exp}
+                key={skill.id}
+                data={skill}
                 index={i}
                 total={total}
                 activeIndex={activeIndex}
@@ -207,3 +202,5 @@ export default function ExperienceSection({ hoveredSection, openSection, toggleS
     </group>
   )
 }
+
+function lerp(a, b, t) { return a + (b - a) * t }

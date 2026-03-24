@@ -61,6 +61,39 @@ export const education = [
   },
 ]
 
+export const skills = [
+  {
+    id: 1,
+    category: "Programming Languages",
+    items: ["C#", "SQL", "JavaScript", "TypeScript", "HTML", "CSS", "Python"],
+  },
+  {
+    id: 2,
+    category: "Frameworks & Libraries",
+    items: ["ASP.NET", "React", "jQuery"],
+  },
+  {
+    id: 3,
+    category: "Databases",
+    items: ["Microsoft SQL Server", "MySQL", "DynamoDB"],
+  },
+  {
+    id: 4,
+    category: "Cloud & DevOps",
+    items: ["AWS (Lambda, S3, DynamoDB, OpenSearch, Bedrock, EventBridge, Secrets Manager)", "Azure Basics"],
+  },
+  {
+    id: 5,
+    category: "Web Technologies & Tools",
+    items: ["REST APIs", "OOP", "Git/Git Bash", "XML/JSON", "Microsoft Power Platform"],
+  },
+  {
+    id: 6,
+    category: "Data & Automation",
+    items: ["SQL Performance Tuning", "Cloud Auditing Scripts", "Data Extraction & Enrichment Pipelines"],
+  },
+]
+
 export const contacts = [
   {
     id: "linkedin",

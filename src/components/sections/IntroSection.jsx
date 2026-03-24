@@ -1,53 +1,40 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Text, Float } from '@react-three/drei'
+import { Html, Float } from '@react-three/drei'
 
 function lerp(a, b, t) { return a + (b - a) * t }
 
 export default function IntroSection({ vs }) {
   const ringRef = useRef()
+  const ring2Ref = useRef()
   const t = vs.vw
 
   useFrame(({ clock }) => {
-    if (ringRef.current) {
-      ringRef.current.rotation.z = clock.getElapsedTime() * 0.1
-    }
+    const time = clock.getElapsedTime()
+    if (ringRef.current) ringRef.current.rotation.z = time * 0.1
+    if (ring2Ref.current) ring2Ref.current.rotation.z = -time * 0.08
   })
 
   return (
-    <group position={[0, lerp(4.5, 4.2, t), 2]}>
+    <group position={[0, lerp(5.2, 5, t), 2]}>
       <Float speed={1.2} rotationIntensity={0.03} floatIntensity={0.15}>
-        <Text
-          fontSize={lerp(0.4, 0.6, t)}
-          color="#1e293b"
-          anchorX="center"
-          anchorY="middle"
-          letterSpacing={0.08}
-        >
-          NIRVIK KC
-        </Text>
-        <Text
-          fontSize={lerp(0.12, 0.18, t)}
-          color="#94a3b8"
-          anchorX="center"
-          anchorY="middle"
-          position={[0, lerp(-0.3, -0.45, t), 0]}
-          letterSpacing={0.2}
-        >
-          SOFTWARE ENGINEER
-        </Text>
+        <Html transform distanceFactor={lerp(2.2, 2, t)} center>
+          <div className="intro-title-card">
+            <div className="intro-name">NIRVIK KC</div>
+            <div className="intro-divider"></div>
+            <div className="intro-role">SOFTWARE ENGINEER</div>
+          </div>
+        </Html>
       </Float>
 
-      <mesh ref={ringRef} rotation={[Math.PI / 2, 0, 0]} position={[0, -0.15, 0]}>
-        <torusGeometry args={[lerp(0.9, 1.4, t), 0.008, 16, 128]} />
-        <meshStandardMaterial
-          color="#818cf8"
-          emissive="#818cf8"
-          emissiveIntensity={2}
-          transparent
-          opacity={0.35}
-          toneMapped={false}
-        />
+      {/* Decorative rings */}
+      <mesh ref={ringRef} rotation={[Math.PI / 2, 0, 0]} position={[0, -0.3, 0]}>
+        <torusGeometry args={[lerp(1.2, 1.8, t), 0.01, 16, 128]} />
+        <meshStandardMaterial color="#818cf8" emissive="#818cf8" emissiveIntensity={2} transparent opacity={0.35} toneMapped={false} />
+      </mesh>
+      <mesh ref={ring2Ref} rotation={[Math.PI / 2, 0, 0.4]} position={[0, -0.3, 0]}>
+        <torusGeometry args={[lerp(1.5, 2.2, t), 0.006, 16, 128]} />
+        <meshStandardMaterial color="#06b6d4" emissive="#06b6d4" emissiveIntensity={1.5} transparent opacity={0.2} toneMapped={false} />
       </mesh>
     </group>
   )

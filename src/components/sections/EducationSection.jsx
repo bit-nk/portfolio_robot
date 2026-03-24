@@ -4,100 +4,26 @@ import { Html, Float } from '@react-three/drei'
 import { education } from '../../utils/data'
 import * as THREE from 'three'
 
-const PANEL_W = 3.4
-const PANEL_H = 2.4
+// Horizontal spacing — will be scaled by viewport
 
-function StackGhost({ cardsAhead, color = '#06b6d4', offset = 0.05, ws = 0.85, hs = 0.60, shiftX = 0 }) {
-  const layers = Math.min(cardsAhead, 3)
-  if (layers <= 0) return null
-  return (
-    <>
-      {Array.from({ length: layers }).map((_, i) => {
-        const layer = i + 1
-        return (
-          <group key={layer} position={[-offset * layer + shiftX, 0, -0.15 * layer]}>
-            <mesh>
-              <planeGeometry args={[PANEL_W * ws, PANEL_H * hs]} />
-              <meshStandardMaterial color="#1a2a3a" transparent opacity={0.3 - i * 0.07} side={THREE.DoubleSide} />
-            </mesh>
-            <mesh>
-              <planeGeometry args={[PANEL_W * ws + 0.04, PANEL_H * hs + 0.04]} />
-              <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.6 - i * 0.15} transparent opacity={0.3 - i * 0.08} side={THREE.DoubleSide} toneMapped={false} />
-            </mesh>
-          </group>
-        )
-      })}
-    </>
-  )
-}
-
-function PanelContent({ data, index, total, onNext, onPrev }) {
-  return (
-    <Html transform distanceFactor={2.8} position={[0, 0, 0.01]} style={{ pointerEvents: 'auto', width: '420px' }}>
-      <div className="holo-screen cyan" onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
-        <div className="holo-header">
-          <span className="holo-counter">{String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span>
-          <div className="holo-dots">
-            {Array.from({ length: total }).map((_, i) => (
-              <span key={i} className={`holo-dot ${i === index ? 'active' : ''}`} />
-            ))}
-          </div>
-        </div>
-        <div className="holo-body">
-          <div className="holo-degree">{data.degree}</div>
-          <div className="holo-school">{data.school}</div>
-          <div className="holo-meta">{data.meta}</div>
-          {data.project && <div className="holo-project">{data.project}</div>}
-        </div>
-        <div className="holo-footer">
-          <button className={`holo-btn ${index <= 0 ? 'disabled' : ''}`} onClick={onPrev} disabled={index <= 0}>◀ PREV</button>
-          <span className="holo-scroll-label"><span className="scroll-icon">⟳</span><span className="desktop-hint">scroll to flip</span><span className="mobile-hint">swipe to flip</span></span>
-          <button className={`holo-btn ${index >= total - 1 ? 'disabled' : ''}`} onClick={onNext} disabled={index >= total - 1}>NEXT ▶</button>
-        </div>
-      </div>
-    </Html>
-  )
-}
-
-function PanelGlass({ glowRef }) {
-  return (
-    <>
-      <mesh>
-        <planeGeometry args={[PANEL_W, PANEL_H]} />
-        <meshStandardMaterial color="#ffffff" transparent opacity={0.06} side={THREE.DoubleSide} />
-      </mesh>
-      <mesh ref={glowRef}>
-        <planeGeometry args={[PANEL_W + 0.04, PANEL_H + 0.04]} />
-        <meshStandardMaterial color="#06b6d4" emissive="#06b6d4" emissiveIntensity={0.3} transparent opacity={0.08} side={THREE.DoubleSide} toneMapped={false} />
-      </mesh>
-    </>
-  )
-}
-
-// Education pivot at RIGHT edge — rotation mirrored from Experience
-function PeelLayer({ data, index, total, direction, onDone }) {
-  const pivotRef = useRef()
-  const rotY = useRef(direction === 'forward' ? 0 : Math.PI * 0.65)
-
-  useFrame(() => {
-    if (!pivotRef.current) return
-    const target = direction === 'forward' ? Math.PI * 0.65 : 0
-    rotY.current = THREE.MathUtils.lerp(rotY.current, target, 0.1)
-    pivotRef.current.rotation.y = rotY.current
-
-    if (Math.abs(rotY.current - target) < 0.05 && onDone) {
-      onDone()
-    }
-  })
+function SliderCard({ data, index, total, activeIndex, cardGap }) {
+  const isActive = index === activeIndex
+  const stepDist = Math.abs(index - activeIndex)
 
   return (
-    <group ref={pivotRef} position={[PANEL_W / 2, 0, 0.02]}>
-      <group position={[-PANEL_W / 2, 0, 0]}>
-        <PanelGlass />
-        <Html transform distanceFactor={2.8} position={[0, 0, 0.01]} style={{ pointerEvents: 'none', width: '420px' }}>
-          <div className="holo-screen cyan" style={{ pointerEvents: 'none' }}>
+    <group position={[index * cardGap, 0, 0]}>
+      {stepDist <= 1 && (
+        <Html transform distanceFactor={2.8} position={[0, 0, 0]}
+          style={{ pointerEvents: isActive ? 'auto' : 'none', width: '420px' }}>
+          <div className={`holo-screen cyan ${isActive ? '' : 'holo-inactive'}`}
+            onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
             <div className="holo-header">
               <span className="holo-counter">{String(index + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span>
+              <div className="holo-dots">
+                {Array.from({ length: total }).map((_, i) => (
+                  <span key={i} className={`holo-dot ${i === activeIndex ? 'active' : ''}`} />
+                ))}
+              </div>
             </div>
             <div className="holo-body">
               <div className="holo-degree">{data.degree}</div>
@@ -105,9 +31,18 @@ function PeelLayer({ data, index, total, direction, onDone }) {
               <div className="holo-meta">{data.meta}</div>
               {data.project && <div className="holo-project">{data.project}</div>}
             </div>
+            {isActive && (
+              <div className="holo-footer">
+                <span className="holo-scroll-label">
+                  <span className="scroll-icon">⟳</span>
+                  <span className="desktop-hint">scroll or drag to switch</span>
+                  <span className="mobile-hint">swipe to switch</span>
+                </span>
+              </div>
+            )}
           </div>
         </Html>
-      </group>
+      )}
     </group>
   )
 }
@@ -115,85 +50,117 @@ function PeelLayer({ data, index, total, direction, onDone }) {
 export default function EducationSection({ hoveredSection, openSection, toggleSection, lockClose, vs }) {
   const t = vs.vw
   const isHovered = useRef(false)
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [peelData, setPeelData] = useState(null)
+  const [activeIndex, setActiveIndex] = useState(0)
   const isOpen = openSection === 'education'
-  const scrollCooldown = useRef(false)
-  const glowRef = useRef()
+
+  const sliderRef = useRef()
+  const targetX = useRef(0)
+  const currentX = useRef(0)
+
+  const total = education.length
+  const cardGap = 3 + t * 1
 
   useEffect(() => {
-    if (isOpen) { setCurrentIndex(0); setPeelData(null) }
+    if (isOpen) {
+      setActiveIndex(0)
+      targetX.current = 0
+      currentX.current = 0
+    }
   }, [isOpen])
 
+  useEffect(() => {
+    targetX.current = -activeIndex * cardGap
+  }, [activeIndex])
+
+  useFrame(() => {
+    if (!sliderRef.current || !isOpen) return
+    currentX.current = THREE.MathUtils.lerp(currentX.current, targetX.current, 0.1)
+    if (Math.abs(currentX.current - targetX.current) < 0.01) {
+      currentX.current = targetX.current
+    }
+    sliderRef.current.position.x = currentX.current
+  })
+
+  const scrollCooldown = useRef(false)
+
   const goNext = useCallback(() => {
-    if (currentIndex >= education.length - 1 || peelData) return
-    lockClose()
-    setPeelData({ data: education[currentIndex], index: currentIndex, direction: 'forward' })
-    setCurrentIndex(currentIndex + 1)
-  }, [currentIndex, peelData, lockClose])
-
-  const goPrev = useCallback(() => {
-    if (currentIndex <= 0 || peelData) return
-    lockClose()
-    const prevIndex = currentIndex - 1
-    setCurrentIndex(prevIndex)
-    setPeelData({ data: education[prevIndex], index: prevIndex, direction: 'backward' })
-  }, [currentIndex, peelData, lockClose])
-
-  const onPeelDone = useCallback(() => {
-    setPeelData(null)
-  }, [])
-
-  const onWheel = useCallback((e) => {
-    if (!isOpen || scrollCooldown.current || peelData) return
+    if (scrollCooldown.current) return
     scrollCooldown.current = true
     setTimeout(() => { scrollCooldown.current = false }, 400)
-    if (e.deltaY > 15) goNext()
-    else if (e.deltaY < -15) goPrev()
-  }, [isOpen, goNext, goPrev, peelData])
+    lockClose()
+    setActiveIndex((prev) => Math.min(prev + 1, total - 1))
+  }, [total, lockClose])
 
-  const touchStart = useRef({ x: 0, y: 0 })
+  const goPrev = useCallback(() => {
+    if (scrollCooldown.current) return
+    scrollCooldown.current = true
+    setTimeout(() => { scrollCooldown.current = false }, 400)
+    lockClose()
+    setActiveIndex((prev) => Math.max(prev - 1, 0))
+  }, [lockClose])
+
+  const wheelCooldown = useRef(false)
+  const onWheel = useCallback((e) => {
+    if (!isOpen || wheelCooldown.current) return
+    if (Math.abs(e.deltaY) > 10) {
+      wheelCooldown.current = true
+      setTimeout(() => { wheelCooldown.current = false }, 500)
+      if (e.deltaY > 0) goNext()
+      else goPrev()
+    }
+  }, [isOpen, goNext, goPrev])
+
+  const isDragging = useRef(false)
+  const dragStartX = useRef(0)
+  const onMouseDown = useCallback((e) => {
+    if (!isOpen) return
+    isDragging.current = true
+    dragStartX.current = e.clientX
+  }, [isOpen])
+
+  const onMouseMove = useCallback((e) => {
+    if (!isOpen || !isDragging.current) return
+    const dx = e.clientX - dragStartX.current
+    if (dx > 80) { dragStartX.current = e.clientX; lockClose(); goNext() }
+    else if (dx < -80) { dragStartX.current = e.clientX; lockClose(); goPrev() }
+  }, [isOpen, goNext, goPrev, lockClose])
+
+  const onMouseUp = useCallback(() => { isDragging.current = false }, [])
+
+  const touchStart = useRef({ x: 0 })
   const onTouchStart = useCallback((e) => {
     if (!isOpen) return
-    touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+    touchStart.current = { x: e.touches[0].clientX }
   }, [isOpen])
 
   const onTouchEnd = useCallback((e) => {
-    if (!isOpen || scrollCooldown.current || peelData) return
+    if (!isOpen) return
     const dx = e.changedTouches[0].clientX - touchStart.current.x
-    // Swipe right = next (opposite of experience)
-    if (dx > 40) {
-      scrollCooldown.current = true
-      setTimeout(() => { scrollCooldown.current = false }, 400)
-      lockClose()
-      goNext()
-    }
-    // Swipe left = prev
-    else if (dx < -40) {
-      scrollCooldown.current = true
-      setTimeout(() => { scrollCooldown.current = false }, 400)
-      lockClose()
-      goPrev()
-    }
-  }, [isOpen, goNext, goPrev, peelData, lockClose])
+    if (dx > 40) { lockClose(); goNext() }
+    else if (dx < -40) { lockClose(); goPrev() }
+  }, [isOpen, goNext, goPrev, lockClose])
 
   useEffect(() => {
     if (!isOpen) return
     window.addEventListener('wheel', onWheel)
+    window.addEventListener('mousedown', onMouseDown)
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', onMouseUp)
     window.addEventListener('touchstart', onTouchStart, { passive: true })
     window.addEventListener('touchend', onTouchEnd)
     return () => {
       window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('mousedown', onMouseDown)
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup', onMouseUp)
       window.removeEventListener('touchstart', onTouchStart)
       window.removeEventListener('touchend', onTouchEnd)
     }
-  }, [isOpen, onWheel, onTouchStart, onTouchEnd])
+  }, [isOpen, onWheel, onMouseDown, onMouseMove, onMouseUp, onTouchStart, onTouchEnd])
 
-  const currentData = education[currentIndex]
-  const cardsAhead = education.length - 1 - currentIndex
 
   return (
-    <group position={[-0.8 - t * 4.2, 3 - t * 1.5, 5 - t * 2]}>
+    <group position={[-1 - t * 4, 3.2 - t * 0.2, 4 - t * 2]}>
       <group position={[0, -0.2, 0]}>
       <Float speed={2} rotationIntensity={0.1} floatIntensity={0.15}>
         <mesh
@@ -220,23 +187,19 @@ export default function EducationSection({ hoveredSection, openSection, toggleSe
       </Html>
 
       {isOpen && (
-        <group position={[0.3 - t * 1.3, 1, -0.3 - t * 0.2]} rotation={[0, t * 0.15, 0]} scale={0.85 + t * 0.15}>
-          <StackGhost cardsAhead={cardsAhead} offset={0.04 + t * 0.04} ws={0.68 + t * 0.17} hs={0.55 + t * 0.05} shiftX={-0.33 + t * 0.33} />
-
-          <group>
-            <PanelGlass glowRef={glowRef} />
-            <PanelContent data={currentData} index={currentIndex} total={education.length} onNext={goNext} onPrev={goPrev} />
+        <group position={[0.3 - t * 1.3, 0, -0.3 - t * 0.2]} scale={0.75 + t * 0.0}>
+          <group ref={sliderRef}>
+            {education.map((edu, i) => (
+              <SliderCard
+                key={edu.id}
+                data={edu}
+                index={i}
+                total={total}
+                activeIndex={activeIndex}
+                cardGap={cardGap}
+              />
+            ))}
           </group>
-
-          {peelData && (
-            <PeelLayer
-              data={peelData.data}
-              index={peelData.index}
-              total={education.length}
-              direction={peelData.direction}
-              onDone={onPeelDone}
-            />
-          )}
         </group>
       )}
     </group>
