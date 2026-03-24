@@ -18,7 +18,9 @@ export default function Robot({ position = [0, 0, 0], mouseParallax, hoveredSect
     // ── Head tracks mouse ──
     if (headRef.current) {
       headRef.current.rotation.y = THREE.MathUtils.lerp(headRef.current.rotation.y, mx * 0.8, 0.05)
-      headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, my * 0.7, 0.05)
+      // my < 0 = mouse at top = head should look UP (limit down movement)
+      const headTiltX = my < 0 ? my * 0.7 : my * 0.2
+      headRef.current.rotation.x = THREE.MathUtils.lerp(headRef.current.rotation.x, headTiltX, 0.05)
       headRef.current.rotation.z = THREE.MathUtils.lerp(headRef.current.rotation.z, mx * -0.12, 0.04)
     }
 
