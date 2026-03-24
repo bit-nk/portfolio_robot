@@ -108,13 +108,27 @@ export default function ContactSection({ hoveredSection, openSection, toggleSect
   // Main hotspot globe + ring scale
   const hotspotRef = useRef()
   const hotspotScale = useRef(1)
+  const labelRef = useRef()
+  const labelX = useRef(0)
+  const labelY = useRef(-1)
 
   useFrame(() => {
-    if (!hotspotRef.current) return
-    const target = isOpen ? 0 : 1
-    hotspotScale.current = THREE.MathUtils.lerp(hotspotScale.current, target, 0.06)
-    hotspotRef.current.scale.setScalar(hotspotScale.current)
-    hotspotRef.current.visible = hotspotScale.current > 0.01
+    if (hotspotRef.current) {
+      const target = isOpen ? 0 : 1
+      hotspotScale.current = THREE.MathUtils.lerp(hotspotScale.current, target, 0.06)
+      hotspotRef.current.scale.setScalar(hotspotScale.current)
+      hotspotRef.current.visible = hotspotScale.current > 0.01
+    }
+
+    // Label position animation — less movement on mobile, below Gmail when open
+    if (labelRef.current) {
+      const targetLabelX = isOpen ? (-0.1 + vs.vw * 0.5) : 0
+      const targetLabelY = isOpen ? -1.2 : -1
+      labelX.current = THREE.MathUtils.lerp(labelX.current, targetLabelX, 0.04)
+      labelY.current = THREE.MathUtils.lerp(labelY.current, targetLabelY, 0.04)
+      labelRef.current.position.x = labelX.current
+      labelRef.current.position.y = labelY.current
+    }
   })
 
   return (
@@ -161,9 +175,11 @@ export default function ContactSection({ hoveredSection, openSection, toggleSect
       )}
 
       {/* Single CONTACT label — below globe when closed, below orbs when open */}
-      <Html position={[0, isOpen ? -1.2 : -1, 0]} center style={{ pointerEvents: 'none' }}>
-        <div className="hotspot-label">CONTACT</div>
-      </Html>
+      <group ref={labelRef} position={[0, -1, 0]}>
+        <Html center style={{ pointerEvents: 'none' }}>
+          <div className="hotspot-label">CONTACT</div>
+        </Html>
+      </group>
     </group>
   )
 }

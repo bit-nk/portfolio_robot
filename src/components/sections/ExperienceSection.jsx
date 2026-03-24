@@ -14,7 +14,7 @@ function SliderCard({ data, index, total, activeIndex, cardGap }) {
     <group position={[index * cardGap, 0, 0]}>
       {stepDist <= 1 && (
         <Html transform distanceFactor={2.8} position={[0, 0, 0]}
-          style={{ pointerEvents: isActive ? 'auto' : 'none', width: '460px' }}>
+          style={{ pointerEvents: isActive ? 'auto' : 'none', width: '460px', display: 'flex', alignItems: 'flex-start' }}>
           <div className={`holo-screen ${isActive ? '' : 'holo-inactive'}`}
             onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>
             <div className="holo-header">
@@ -56,8 +56,11 @@ export default function ExperienceSection({ hoveredSection, openSection, toggleS
   const isOpen = openSection === 'experience'
 
   const sliderRef = useRef()
+  const labelRef = useRef()
   const targetX = useRef(0)
   const currentX = useRef(0)
+  const labelX = useRef(0)
+  const labelY = useRef(-0.8)
 
   const total = experience.length
   const cardGap = 3 + t * 1 // 3 on mobile, 4 on desktop
@@ -75,12 +78,24 @@ export default function ExperienceSection({ hoveredSection, openSection, toggleS
   }, [activeIndex])
 
   useFrame(() => {
-    if (!sliderRef.current || !isOpen) return
-    currentX.current = THREE.MathUtils.lerp(currentX.current, targetX.current, 0.1)
-    if (Math.abs(currentX.current - targetX.current) < 0.01) {
-      currentX.current = targetX.current
+    // Slider animation
+    if (sliderRef.current && isOpen) {
+      currentX.current = THREE.MathUtils.lerp(currentX.current, targetX.current, 0.1)
+      if (Math.abs(currentX.current - targetX.current) < 0.01) {
+        currentX.current = targetX.current
+      }
+      sliderRef.current.position.x = currentX.current
     }
-    sliderRef.current.position.x = currentX.current
+
+    // Label position animation — less movement on mobile
+    if (labelRef.current) {
+      const targetLabelX = isOpen ? (-0.8 - t * 1.2) : 0
+      const targetLabelY = isOpen ? -1.5 : -0.8
+      labelX.current = THREE.MathUtils.lerp(labelX.current, targetLabelX, 0.04)
+      labelY.current = THREE.MathUtils.lerp(labelY.current, targetLabelY, 0.04)
+      labelRef.current.position.x = labelX.current
+      labelRef.current.position.y = labelY.current
+    }
   })
 
   const scrollCooldown = useRef(false)
@@ -184,12 +199,14 @@ export default function ExperienceSection({ hoveredSection, openSection, toggleS
       </Float>
       </group>
 
-      <Html position={[0, -0.8, 0]} center style={{ pointerEvents: 'none' }}>
-        <div className="hotspot-label">EXPERIENCE</div>
-      </Html>
+      <group ref={labelRef} position={[0, -0.8, 0]}>
+        <Html center style={{ pointerEvents: 'none' }}>
+          <div className="hotspot-label">EXPERIENCE</div>
+        </Html>
+      </group>
 
       {isOpen && (
-        <group position={[0 + t * 1, 0, -0.3 - t * 0.2]} scale={0.75 + t * 0.0}>
+        <group position={[0 + t * 1, -0.5, -0.3 - t * 0.2]} scale={0.75 + t * 0.0}>
           <group ref={sliderRef}>
             {experience.map((exp, i) => (
               <SliderCard

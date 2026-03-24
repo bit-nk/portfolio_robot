@@ -142,9 +142,12 @@ html, body, #root {
   box-shadow: 0 2px 20px rgba(129, 140, 248, 0.1), 0 0 40px rgba(129, 140, 248, 0.04), inset 0 0 20px rgba(129, 140, 248, 0.02);
 }
 
-/* Smooth size transition when footer appears/disappears */
+/* Smooth size transition */
 .holo-screen {
-  transition: all 0.3s ease;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, transform 0.3s ease;
+  vertical-align: top;
+  max-height: 2000px;
+  overflow: hidden;
 }
 
 /* Inactive cards (adjacent in slider) */
@@ -152,7 +155,20 @@ html, body, #root {
   opacity: 0.4;
   filter: brightness(0.85);
   transform: scale(0.95);
-  transition: all 0.3s ease;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, transform 0.3s ease;
+  max-height: 300px;
+  overflow: hidden;
+}
+
+.holo-inactive::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to top, rgba(235, 235, 248, 1), transparent);
+  pointer-events: none;
 }
 
 /* Ensure holo overlays sit above the close-overlay */
@@ -598,17 +614,20 @@ html, body, #root {
 
 @media (max-width: 768px) {
   .holo-screen {
-    width: min(380px, 92vw);
-    padding: 16px 18px;
+    width: min(500px, 98vw);
+    padding: 24px 26px;
   }
-  .holo-counter { font-size: 11px; }
-  .holo-date { font-size: 10px; }
-  .holo-role, .holo-degree { font-size: 18px; }
-  .holo-company, .holo-school { font-size: 14px; }
-  .holo-details li { font-size: 16px; line-height: 1.55; }
-  .holo-meta, .holo-project { font-size: 12px; }
-  .holo-skill-category { font-size: 18px; }
-  .holo-skill-tag { font-size: 12px; }
+  .holo-counter { font-size: 14px; }
+  .holo-date { font-size: 14px; }
+  .holo-role { font-size: 22px; }
+  .holo-degree { font-size: 26px; }
+  .holo-company, .holo-school { font-size: 22px; }
+  .holo-details li { font-size: 38px; line-height: 1.55; }
+  .holo-screen.cyan .holo-details li { font-size: 18px; }
+  .holo-meta, .holo-project { font-size: 20px; }
+  .holo-screen.cyan .holo-meta, .holo-screen.cyan .holo-project { font-size: 14px; }
+  .holo-skill-category { font-size: 16px; }
+  .holo-skill-tag { font-size: 11px; }
   .holo-btn { font-size: 10px; padding: 8px 14px; min-height: 32px; min-width: 60px; }
   .holo-scroll-label { font-size: 9px; }
   .holo-footer { margin-top: 10px; padding-top: 8px; }

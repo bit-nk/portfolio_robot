@@ -5,9 +5,9 @@ export const experience = [
     role: "Software Engineer",
     company: "Adex International, USA",
     details: [
-      "Modernized enterprise reporting through automation and data engineering",
-      "Built data transformation pipelines for metadata extraction and schema inference",
-      "Automated migration from legacy reporting to Power BI using .NET",
+      "Developed full-stack solutions at Adex International to modernize enterprise reporting systems through automation and data engineering",
+      "Built backend processing modules and data transformation pipelines to support metadata extraction, schema inference, and automated report generation",
+      "Implemented scalable components across the stack using .NET and data modeling techniques to enable automated migration from legacy reporting platforms to Power BI",
     ],
   },
   {
@@ -16,9 +16,9 @@ export const experience = [
     role: "Software Engineer Intern",
     company: "PMsquare, USA",
     details: [
-      "Built AWS-based Intelligent Document Processing platform (Lambda, S3, DynamoDB, OpenSearch, Bedrock)",
-      "Optimized queries and security across six enterprise SQL Servers",
-      "Automated cloud auditing scripts across 18 AWS accounts",
+      "Built and integrated an AWS-based Intelligent Document Processing (IDP) platform using Lambda, S3, DynamoDB, OpenSearch, and Bedrock to automate data extraction, enrichment, storage, and intelligent document search",
+      "Performed end-to-end performance and security assessments across six enterprise SQL Servers, optimizing queries, indexes, and configurations to significantly improve system responsiveness and ensure compliance with security best practices",
+      "Developed automated scripts for AWS multi-account cloud auditing, extracting IAM, role, and resource data to identify unused assets, reduce costs, and strengthen security governance across 18 accounts",
     ],
   },
   {
@@ -27,9 +27,12 @@ export const experience = [
     role: "Software Engineer",
     company: "Leapfrog Technology, Nepal · Signetic, Seattle",
     details: [
-      "Developed PowerApps for vaccination, clinical services, and insurance billing",
-      "Optimized React performance with GraphQL, REST APIs, and error boundaries",
-      "Built C# plugins and JS web resources for Model-Driven Apps",
+      "Developed and maintained a PowerApps application for vaccination, clinical services, and testing, enabling patient appointment booking, fulfillment, and insurance billing for pharmacies while also monitoring and implementing security roles for end-users and developers to control access to data and form views",
+      "Improved React app performance by optimizing state management, re-renders, and data fetching with GraphQL and REST APIs, reducing load times and network overhead",
+      "Enhanced system reliability with robust API error handling and React Error Boundaries for UI-level issues",
+      "Automated email workflows with Power Automate for booking confirmations and reminders",
+      "Delivered training sessions and created internal documentation to support PowerApps development best practices",
+      "Developed JavaScript web resources and C# plugins for Model-Driven Apps to create interactive UIs with auto-fill, custom HTML/CSS, dynamic visibility, validation, and manage billing and appointment flow with pre- and post-operation requests",
     ],
   },
   {
@@ -38,9 +41,19 @@ export const experience = [
     role: "Freelance Software Developer",
     company: "CT Bunbury, Kathmandu",
     details: [
-      "Created equipment request and waiver app in PHP with Dataverse API",
-      "Built PowerApps for booking, staff management, and reporting",
-      "Developed email automation for equipment lifecycle management",
+      "Created an equipment request and waiver app in PHP, enabling employees to book equipment via a custom calendar and dynamic listings, integrating with Dataverse through API",
+      "Developed a PowerApps application for booking requests, staff and equipment management, log maintenance, and report generation",
+      "Developed email automation for admins to manage equipment requests, waiver fulfillment, and returns, and for employees to view request approvals, rental info, returns, and waiver forms",
+    ],
+  },
+  {
+    id: 5,
+    date: "Sep 2021 – Nov 2021",
+    role: "Software Engineer Intern",
+    company: "Leapfrog Technology, Nepal",
+    details: [
+      "Developed and deployed Power Apps (Model-Driven and Canvas Apps) and Power Automate workflows to enhance business processes and automate routine tasks and built Power BI dashboards and reports for data visualization and insights",
+      "Managed tenants, environments, and deployments, gaining hands-on experience with MS Dataverse, security roles, and custom plugin/web resource development",
     ],
   },
 ]
