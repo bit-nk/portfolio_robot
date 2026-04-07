@@ -5,9 +5,11 @@ export const experience = [
     role: "Software Engineer",
     company: "Adex International, USA",
     details: [
-      "Developed full-stack solutions at Adex International to modernize enterprise reporting systems through automation and data engineering",
-      "Built backend processing modules and data transformation pipelines to support metadata extraction, schema inference, and automated report generation",
-      "Implemented scalable components across the stack using .NET and data modeling techniques to enable automated migration from legacy reporting platforms to Power BI",
+      "Built automated pipeline to convert SAP Crystal Reports (.rpt) into Power BI formats (PBIP projects and RDL reports), eliminating manual report migration",
+      "Developed multi-stage processing modules (XML extraction, JSON, semantic model) for formula translation, layout parsing, and structured report reconstruction using .NET and SQL",
+      "Led infrastructure assessment, analyzing 75+ domains and hosting environments, identifying critical issues across SSL, DNS, and outdated WordPress systems",
+      "Defined remediation strategy, including SSL lifecycle fixes, DNS cleanup, domain consolidation, and WordPress security hardening",
+      "Contributed to cloud optimization and FinOps automation design, focusing on automated data ingestion and cost allocation pipelines",
     ],
   },
   {
