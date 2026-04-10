@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Html, Float } from '@react-three/drei'
+import { Html } from '@react-three/drei'
 import { experience } from '../../utils/data'
 import * as THREE from 'three'
 
@@ -178,33 +178,6 @@ export default function ExperienceSection({ hoveredSection, openSection, toggleS
 
   return (
     <group position={[1 + t * 4, 3.2 - t * 0.2, 4 - t * 3]}>
-      <group position={[0, 0.25, 0]}>
-      <Float speed={2} rotationIntensity={0.1} floatIntensity={0.15}>
-        <mesh
-          onPointerEnter={() => { isHovered.current = true; hoveredSection.current = 'experience'; document.body.style.cursor = 'pointer' }}
-          onPointerLeave={() => { isHovered.current = false; hoveredSection.current = 'none'; document.body.style.cursor = 'auto' }}
-          onClick={(e) => { e.stopPropagation(); toggleSection('experience') }}
-        >
-          <icosahedronGeometry args={[0.35 + t * 0.1, 2]} />
-          <meshStandardMaterial color="#818cf8" emissive="#818cf8" emissiveIntensity={1.5} wireframe transparent opacity={0.7} toneMapped={false} />
-        </mesh>
-        <mesh visible={false}
-          onPointerEnter={() => { isHovered.current = true; hoveredSection.current = 'experience'; document.body.style.cursor = 'pointer' }}
-          onPointerLeave={() => { isHovered.current = false; hoveredSection.current = 'none'; document.body.style.cursor = 'auto' }}
-          onClick={(e) => { e.stopPropagation(); toggleSection('experience') }}
-        >
-          <sphereGeometry args={[0.8, 12, 12]} />
-          <meshBasicMaterial />
-        </mesh>
-      </Float>
-      </group>
-
-      <group ref={labelRef} position={[0, -0.8, 0]}>
-        <Html center style={{ pointerEvents: 'none' }}>
-          <div className="hotspot-label">EXPERIENCE</div>
-        </Html>
-      </group>
-
       {isOpen && (
         <group position={[0 + t * 1, -0.5, -0.3 - t * 0.2]} scale={0.75 + t * 0.0}>
           <group ref={sliderRef}>

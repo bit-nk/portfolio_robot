@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Html, Float } from '@react-three/drei'
+import { Html } from '@react-three/drei'
 import { skills } from '../../utils/data'
 import * as THREE from 'three'
 
@@ -160,29 +160,6 @@ export default function SkillsSection({ hoveredSection, openSection, toggleSecti
 
   return (
     <group position={[lerp(1, 2, t), lerp(0.5, 1, t), lerp(5, 4, t)]}>
-      <Float speed={2} rotationIntensity={0.1} floatIntensity={0.15}>
-        <mesh
-          onPointerEnter={() => { isHovered.current = true; hoveredSection.current = 'skills'; document.body.style.cursor = 'pointer' }}
-          onPointerLeave={() => { isHovered.current = false; hoveredSection.current = 'none'; document.body.style.cursor = 'auto' }}
-          onClick={(e) => { e.stopPropagation(); toggleSection('skills') }}
-        >
-          <icosahedronGeometry args={[0.35, 2]} />
-          <meshStandardMaterial color="#f59e0b" emissive="#f59e0b" emissiveIntensity={1.5} wireframe transparent opacity={0.7} toneMapped={false} />
-        </mesh>
-        <mesh visible={false}
-          onPointerEnter={() => { isHovered.current = true; hoveredSection.current = 'skills'; document.body.style.cursor = 'pointer' }}
-          onPointerLeave={() => { isHovered.current = false; hoveredSection.current = 'none'; document.body.style.cursor = 'auto' }}
-          onClick={(e) => { e.stopPropagation(); toggleSection('skills') }}
-        >
-          <sphereGeometry args={[0.8, 12, 12]} />
-          <meshBasicMaterial />
-        </mesh>
-      </Float>
-
-      <Html position={[0, -0.8, 0]} center style={{ pointerEvents: 'none' }}>
-        <div className="hotspot-label">SKILLS</div>
-      </Html>
-
       {isOpen && (
         <group position={[-0.2 + t * 0.7, 0, -0.3 - t * 0.2]} scale={0.75 + t * 0.0}>
           <group ref={sliderRef}>

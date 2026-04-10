@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Html, Float } from '@react-three/drei'
+import { Html } from '@react-three/drei'
 import { education } from '../../utils/data'
 import * as THREE from 'three'
 
@@ -161,31 +161,6 @@ export default function EducationSection({ hoveredSection, openSection, toggleSe
 
   return (
     <group position={[-1 - t * 4, 3.2 - t * 0.2, 4 - t * 2]}>
-      <group position={[0, -0.2, 0]}>
-      <Float speed={2} rotationIntensity={0.1} floatIntensity={0.15}>
-        <mesh
-          onPointerEnter={() => { isHovered.current = true; hoveredSection.current = 'education'; document.body.style.cursor = 'pointer' }}
-          onPointerLeave={() => { isHovered.current = false; hoveredSection.current = 'none'; document.body.style.cursor = 'auto' }}
-          onClick={(e) => { e.stopPropagation(); toggleSection('education') }}
-        >
-          <icosahedronGeometry args={[0.33, 2]} />
-          <meshStandardMaterial color="#06b6d4" emissive="#06b6d4" emissiveIntensity={1.5} wireframe transparent opacity={0.7} toneMapped={false} />
-        </mesh>
-        <mesh visible={false}
-          onPointerEnter={() => { isHovered.current = true; hoveredSection.current = 'education'; document.body.style.cursor = 'pointer' }}
-          onPointerLeave={() => { isHovered.current = false; hoveredSection.current = 'none'; document.body.style.cursor = 'auto' }}
-          onClick={(e) => { e.stopPropagation(); toggleSection('education') }}
-        >
-          <sphereGeometry args={[0.8, 12, 12]} />
-          <meshBasicMaterial />
-        </mesh>
-      </Float>
-      </group>
-
-      <Html position={[0, -0.8, 0]} center style={{ pointerEvents: 'none' }}>
-        <div className="hotspot-label">EDUCATION</div>
-      </Html>
-
       {isOpen && (
         <group position={[0.3 - t * 1.3, 0, -0.3 - t * 0.2]} scale={0.75 + t * 0.0}>
           <group ref={sliderRef}>

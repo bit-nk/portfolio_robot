@@ -1,7 +1,9 @@
 import { Canvas } from '@react-three/fiber'
-import { AdaptiveDpr, AdaptiveEvents } from '@react-three/drei'
 import { Component, useRef, useState, useCallback, useEffect } from 'react'
 import Scene from './components/canvas/Scene'
+import SplineRobot from './components/SplineRobot'
+import Navbar from './components/Navbar'
+import HomeOverlay from './components/HomeOverlay'
 import { useMouseParallax } from './hooks/useMouseParallax'
 import { useViewportScale } from './hooks/useIsMobile'
 
@@ -60,15 +62,20 @@ export default function App() {
   return (
     <ErrorBoundary>
       <div className="canvas-wrapper">
+        <Navbar onNavigate={toggleSection} openSection={openSection} />
+        <SplineRobot openSection={openSection} />
+
+        {/* Corner frame brackets */}
+        <div className="cyber-frame tl"></div>
+        <div className="cyber-frame tr"></div>
+        <div className="cyber-frame bl"></div>
+        <div className="cyber-frame br"></div>
         <Canvas
           camera={{ fov, near: 0.1, far: 100, position: [0, 3, 12] }}
-          gl={{ antialias: vs.vw > 0.5, alpha: false }}
+          gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
           eventPrefix="client"
-          dpr={vs.isMobile ? 1 : [1, 2]}
+          dpr={1}
         >
-          <color attach="background" args={['#f0f0f0']} />
-          <AdaptiveDpr pixelated />
-          <AdaptiveEvents />
           <Scene
             mouseParallax={mouseParallax}
             hoveredSection={hoveredSection}
@@ -80,11 +87,11 @@ export default function App() {
           />
         </Canvas>
 
-        {openSection && (
-          <div className="close-overlay">
-            <div className="close-hint">{vs.isMobile ? 'tap anywhere to go back' : 'click anywhere to go back'}</div>
-          </div>
-        )}
+        <HomeOverlay onNavigate={toggleSection} visible={!openSection} />
+
+        <div className={`close-overlay ${openSection ? 'visible' : ''}`}>
+          <div className="close-hint">{vs.isMobile ? 'tap anywhere to go back' : 'click anywhere to go back'}</div>
+        </div>
       </div>
     </ErrorBoundary>
   )
