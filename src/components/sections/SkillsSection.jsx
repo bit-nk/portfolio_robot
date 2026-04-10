@@ -72,10 +72,11 @@ export default function SkillsSection({ hoveredSection, openSection, toggleSecti
     targetX.current = -activeIndex * cardGap
   }, [activeIndex, cardGap])
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!sliderRef.current || !isOpen) return
-    currentX.current = THREE.MathUtils.lerp(currentX.current, targetX.current, 0.1)
-    if (Math.abs(currentX.current - targetX.current) < 0.01) {
+    const factor = 1 - Math.exp(-(vs.isMobile ? 5 : 10) * delta)
+    currentX.current += (targetX.current - currentX.current) * factor
+    if (Math.abs(currentX.current - targetX.current) < 0.02) {
       currentX.current = targetX.current
     }
     sliderRef.current.position.x = currentX.current

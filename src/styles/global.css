@@ -695,6 +695,7 @@ html, body, #root {
   height: 100% !important;
 }
 
+
 /* R3F canvas below Spline */
 .canvas-wrapper > canvas {
   position: relative;
@@ -1225,51 +1226,80 @@ html, body, #root {
   .holo-screen { width: min(380px, 85vw); padding: 16px 18px; }
 }
 
-@media (max-width: 768px) {
-  .cyber-nav { padding: 4px 6px; gap: 3px; }
-  .cyber-nav-center { gap: 1px; }
-  .cyber-nav-link { font-size: 9px; padding: 6px 8px; letter-spacing: 0.08em; }
-  .cyber-logo { font-size: 14px; padding: 4px 10px; }
-  .cyber-btn-outline { font-size: 9px; padding: 6px 10px; }
-  .cyber-nav-right { padding-left: 4px; }
+/* Nav label switching */
+.nav-short { display: none; }
+.nav-full { display: inline; }
 
-  .holo-screen { width: min(500px, 98vw); padding: 24px 26px; }
-  .holo-counter { font-size: 14px; }
-  .holo-date { font-size: 14px; }
-  .holo-role { font-size: 22px; }
-  .holo-degree { font-size: 26px; }
-  .holo-company, .holo-school { font-size: 22px; }
-  .holo-details li { font-size: 38px; line-height: 1.55; }
-  .holo-screen.cyan .holo-details li { font-size: 18px; }
-  .holo-meta, .holo-project { font-size: 20px; }
-  .holo-screen.cyan .holo-meta, .holo-screen.cyan .holo-project { font-size: 14px; }
-  .holo-skill-category { font-size: 16px; }
-  .holo-skill-tag { font-size: 11px; }
-  .holo-btn { font-size: 10px; padding: 8px 14px; min-height: 32px; min-width: 60px; }
-  .holo-scroll-label { font-size: 9px; }
-  .holo-footer { margin-top: 10px; padding-top: 8px; }
+@media (max-width: 768px) {
+  /* Navbar — compact, no NK logo, short labels */
+  .cyber-nav { padding: 4px 6px; gap: 3px; }
+  .cyber-nav-left { display: none; }
+  .cyber-nav-center { gap: 2px; }
+  .cyber-nav-link { font-size: 11px; padding: 8px 12px; letter-spacing: 0.1em; }
+  .cyber-nav-link.hide-mobile { display: none; }
+  .nav-short { display: inline; }
+  .nav-full { display: none; }
+  .cyber-btn-outline { font-size: 11px; padding: 8px 14px; }
+  .cyber-nav-right { padding-left: 4px; border-left: none; }
+
+  /* Intro text — bigger on mobile */
+  .intro-name { font-size: 80px; }
+  .intro-role { font-size: 28px; letter-spacing: 0.25em; }
+  .intro-divider { width: 50px; margin: 14px auto; }
+
+  /* Detail cards — scaled up for readability */
+  .holo-screen { width: min(500px, 96vw); padding: 28px 28px; }
+  .holo-counter { font-size: 16px; }
+  .holo-date { font-size: 16px; }
+  .holo-role { font-size: 26px; }
+  .holo-degree { font-size: 28px; }
+  .holo-company, .holo-school { font-size: 24px; }
+  .holo-details li { font-size: 20px; line-height: 1.6; }
+  .holo-screen.cyan .holo-details li { font-size: 20px; }
+  .holo-meta, .holo-project { font-size: 22px; }
+  .holo-screen.cyan .holo-meta, .holo-screen.cyan .holo-project { font-size: 16px; }
+  .holo-skill-category { font-size: 22px; }
+  .holo-skill-tag { font-size: 14px; padding: 6px 12px; }
+  .holo-btn { font-size: 12px; padding: 8px 14px; min-height: 32px; min-width: 60px; }
+  .holo-scroll-label { font-size: 11px; }
+  .holo-footer { margin-top: 12px; padding-top: 10px; }
   .holo-screen.cyan .holo-body { padding-bottom: 0; }
-  .holo-screen.cyan .holo-footer { margin-top: 6px; }
+  .holo-screen.cyan .holo-footer { margin-top: 8px; }
+  .holo-header { margin-bottom: 14px; padding-bottom: 10px; }
+
 
   .hotspot-label { font-size: 12px; letter-spacing: 0.15em; padding: 6px 16px; }
 
-  .intro-name { font-size: 64px; }
-  .intro-role { font-size: 24px; letter-spacing: 0.25em; }
-  .intro-divider { width: 50px; margin: 14px auto; }
+  /* Home overlay — move items higher so they don't get cut off */
+  .home-info-panel { top: auto; bottom: 130px; left: 20px; transform: none; max-width: 280px; }
+  .home-info-text { font-size: 13px; }
+  .home-cta-wrapper { bottom: 110px; right: 20px; width: 110px; height: 110px; }
+  .home-cta { font-size: 10px; }
+  .home-left-decor { display: none; }
+  .home-hud { display: none; }
+  .home-status-left { display: none; }
 
-  .contact-card { padding: 14px 22px; min-width: 100px; }
-  .contact-card-label { font-size: 11px; }
-  .contact-card-sub { font-size: 9px; }
-  .contact-card-icon svg { width: 22px; height: 22px; }
+  /* Contact cards */
+  .contact-card { padding: 16px 24px; min-width: 110px; }
+  .contact-card-label { font-size: 13px; }
+  .contact-card-sub { font-size: 10px; }
+  .contact-card-icon svg { width: 24px; height: 24px; }
 
-  .close-hint { font-size: 9px; padding: 5px 14px; }
+  .close-hint { font-size: 10px; padding: 6px 16px; }
 }
 
 @media (max-width: 480px) {
-  .holo-screen { width: min(340px, 92vw); padding: 14px 16px; }
-  .holo-role, .holo-degree { font-size: 13px; }
-  .holo-details li { font-size: 9px; }
-  .holo-company, .holo-school { font-size: 10px; }
+  .intro-name { font-size: 60px; }
+  .intro-role { font-size: 22px; }
 
-  .cyber-nav-center { display: none; }
+  .holo-screen { width: min(340px, 94vw); padding: 20px 18px; }
+  .holo-role, .holo-degree { font-size: 20px; }
+  .holo-details li { font-size: 16px; }
+  .holo-screen.cyan .holo-details li { font-size: 16px; }
+  .holo-company, .holo-school { font-size: 18px; }
+  .holo-skill-category { font-size: 18px; }
+  .holo-skill-tag { font-size: 12px; }
+
+  .home-info-panel { max-width: 220px; bottom: 120px; }
+  .home-cta-wrapper { bottom: 100px; }
 }
