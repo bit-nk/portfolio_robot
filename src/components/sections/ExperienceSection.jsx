@@ -80,7 +80,7 @@ export default function ExperienceSection({ hoveredSection, openSection, toggleS
   useFrame((_, delta) => {
     // Slider animation — frame-rate independent damping
     if (sliderRef.current && isOpen) {
-      const factor = 1 - Math.exp(-(vs.isMobile ? 5 : 10) * delta)
+      const factor = 1 - Math.exp(-(vs.isMobile ? 5 : 7) * delta)
       currentX.current += (targetX.current - currentX.current) * factor
       if (Math.abs(currentX.current - targetX.current) < 0.02) {
         currentX.current = targetX.current

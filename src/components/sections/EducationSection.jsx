@@ -74,7 +74,7 @@ export default function EducationSection({ hoveredSection, openSection, toggleSe
 
   useFrame((_, delta) => {
     if (!sliderRef.current || !isOpen) return
-    const factor = 1 - Math.exp(-(vs.isMobile ? 5 : 10) * delta)
+    const factor = 1 - Math.exp(-(vs.isMobile ? 5 : 7) * delta)
     currentX.current += (targetX.current - currentX.current) * factor
     if (Math.abs(currentX.current - targetX.current) < 0.02) {
       currentX.current = targetX.current
