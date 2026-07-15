@@ -2,7 +2,6 @@ import { useRef, useState, useEffect, useCallback } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import { education } from '../../utils/data'
-import * as THREE from 'three'
 
 // Horizontal spacing — will be scaled by viewport
 
@@ -47,9 +46,8 @@ function SliderCard({ data, index, total, activeIndex, cardGap }) {
   )
 }
 
-export default function EducationSection({ hoveredSection, openSection, toggleSection, lockClose, vs }) {
+export default function EducationSection({ openSection, lockClose, vs }) {
   const t = vs.vw
-  const isHovered = useRef(false)
   const [activeIndex, setActiveIndex] = useState(0)
   const isOpen = openSection === 'education'
 
@@ -70,7 +68,7 @@ export default function EducationSection({ hoveredSection, openSection, toggleSe
 
   useEffect(() => {
     targetX.current = -activeIndex * cardGap
-  }, [activeIndex])
+  }, [activeIndex, cardGap])
 
   useFrame((_, delta) => {
     if (!sliderRef.current || !isOpen) return
@@ -143,7 +141,7 @@ export default function EducationSection({ hoveredSection, openSection, toggleSe
 
   useEffect(() => {
     if (!isOpen) return
-    window.addEventListener('wheel', onWheel)
+    window.addEventListener('wheel', onWheel, { passive: true })
     window.addEventListener('mousedown', onMouseDown)
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('mouseup', onMouseUp)

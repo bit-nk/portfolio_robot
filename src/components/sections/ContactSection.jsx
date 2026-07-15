@@ -1,8 +1,5 @@
-import { useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import { contacts } from '../../utils/data'
-import * as THREE from 'three'
 
 function lerp(a, b, t) { return a + (b - a) * t }
 
@@ -17,7 +14,7 @@ const COLORS = { linkedin: '#0a66c2', gmail: '#ea4335', github: '#7c3aed' }
 const CARD_POSITIONS_DESKTOP = [[1.5, 0, 0], [0, -0.2, 0.3], [-1.5, 0, 0]]
 const CARD_POSITIONS_MOBILE = [[0.7, 0, 0], [0, -0.1, 0.15], [-0.7, 0, 0]]
 
-function ContactCard({ data, pos, index }) {
+function ContactCard({ data, pos }) {
   const color = COLORS[data.icon]
 
   return (
@@ -45,27 +42,12 @@ function ContactCard({ data, pos, index }) {
   )
 }
 
-export default function ContactSection({ hoveredSection, openSection, toggleSection, lockClose, vs }) {
+export default function ContactSection({ openSection, vs }) {
   const isMobile = vs.isMobile
   const isOpen = openSection === 'contact'
-  const labelRef = useRef()
-  const labelX = useRef(0)
-  const labelY = useRef(-1)
-
-  useFrame(() => {
-    if (labelRef.current) {
-      const targetLabelX = isOpen ? (-0.1 + vs.vw * 0.5) : 0
-      const targetLabelY = isOpen ? -1.2 : -1
-      labelX.current = THREE.MathUtils.lerp(labelX.current, targetLabelX, 0.04)
-      labelY.current = THREE.MathUtils.lerp(labelY.current, targetLabelY, 0.04)
-      labelRef.current.position.x = labelX.current
-      labelRef.current.position.y = labelY.current
-    }
-  })
 
   return (
-    <group position={[lerp(-1, -3, vs.vw), lerp(1, 1, vs.vw), lerp(6, 6, vs.vw)]}>
-
+    <group position={[lerp(-1, -3, vs.vw), 1, 6]}>
       {isOpen && (
         <group position={[0, isMobile ? 1.8 : 2.5, 0.5]}>
           {contacts.map((c, i) => (
@@ -73,12 +55,10 @@ export default function ContactSection({ hoveredSection, openSection, toggleSect
               key={c.id}
               data={c}
               pos={isMobile ? CARD_POSITIONS_MOBILE[i] : CARD_POSITIONS_DESKTOP[i]}
-              index={i}
             />
           ))}
         </group>
       )}
-
     </group>
   )
 }

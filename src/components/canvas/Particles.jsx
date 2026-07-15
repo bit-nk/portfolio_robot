@@ -15,14 +15,14 @@ export default function Particles({ count = 600 }) {
     return arr
   }, [count])
 
-  useFrame(({ clock }) => {
+  useFrame(({ clock }, delta) => {
     if (!ref.current) return
     const t = clock.getElapsedTime()
     const posArr = ref.current.geometry.attributes.position.array
     for (let i = 0; i < count; i++) {
-      // Slow upward drift + sine wobble
-      posArr[i * 3 + 1] += 0.002
-      posArr[i * 3] += Math.sin(t * 0.3 + i) * 0.0005
+      // Slow upward drift + sine wobble — delta-scaled so speed matches at any refresh rate
+      posArr[i * 3 + 1] += 0.12 * delta
+      posArr[i * 3] += Math.sin(t * 0.3 + i) * 0.03 * delta
 
       // Reset particles that drift too high
       if (posArr[i * 3 + 1] > 8) posArr[i * 3 + 1] = 0

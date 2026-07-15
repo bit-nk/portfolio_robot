@@ -1,5 +1,8 @@
-import { useEffect, useRef } from 'react'
-import Spline from '@splinetool/react-spline'
+import { lazy, Suspense, useEffect, useRef } from 'react'
+
+// Lazy: keeps the ~2MB Spline runtime out of the entry chunk so the rest of
+// the app paints without waiting for it.
+const Spline = lazy(() => import('@splinetool/react-spline'))
 
 // CSS transform per section: [translateX, translateY, scale]
 const TRANSFORMS = {
@@ -58,7 +61,9 @@ export default function SplineRobot({ openSection }) {
           willChange: 'transform',
         }}
       >
-        <Spline scene="https://prod.spline.design/xOEybNMgp4wulbDZ/scene.splinecode" />
+        <Suspense fallback={null}>
+          <Spline scene="https://prod.spline.design/xOEybNMgp4wulbDZ/scene.splinecode" />
+        </Suspense>
       </div>
     </div>
   )

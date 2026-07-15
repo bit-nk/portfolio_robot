@@ -26,7 +26,8 @@ export function useViewportScale() {
     setScale((prev) => {
       const next = calcScale()
       // Only update if values actually changed to avoid unnecessary re-renders
-      if (prev.vw === next.vw && prev.isMobile === next.isMobile && prev.aspect === next.aspect) return prev
+      if (prev.vw === next.vw && prev.vh === next.vh && prev.aspect === next.aspect &&
+          prev.isPortrait === next.isPortrait && prev.isMobile === next.isMobile && prev.isTablet === next.isTablet) return prev
       return next
     })
   }, [])

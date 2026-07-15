@@ -2,7 +2,6 @@ import { useRef, useState, useEffect, useCallback } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import { experience } from '../../utils/data'
-import * as THREE from 'three'
 
 // Horizontal spacing between cards — will be scaled by viewport
 
@@ -49,18 +48,14 @@ function SliderCard({ data, index, total, activeIndex, cardGap }) {
   )
 }
 
-export default function ExperienceSection({ hoveredSection, openSection, toggleSection, lockClose, vs }) {
+export default function ExperienceSection({ openSection, lockClose, vs }) {
   const t = vs.vw
-  const isHovered = useRef(false)
   const [activeIndex, setActiveIndex] = useState(0)
   const isOpen = openSection === 'experience'
 
   const sliderRef = useRef()
-  const labelRef = useRef()
   const targetX = useRef(0)
   const currentX = useRef(0)
-  const labelX = useRef(0)
-  const labelY = useRef(-0.8)
 
   const total = experience.length
   const cardGap = 3 + t * 1 // 3 on mobile, 4 on desktop
@@ -75,7 +70,7 @@ export default function ExperienceSection({ hoveredSection, openSection, toggleS
 
   useEffect(() => {
     targetX.current = -activeIndex * cardGap
-  }, [activeIndex])
+  }, [activeIndex, cardGap])
 
   useFrame((_, delta) => {
     // Slider animation — frame-rate independent damping
@@ -86,16 +81,6 @@ export default function ExperienceSection({ hoveredSection, openSection, toggleS
         currentX.current = targetX.current
       }
       sliderRef.current.position.x = currentX.current
-    }
-
-    // Label position animation — less movement on mobile
-    if (labelRef.current) {
-      const targetLabelX = isOpen ? (-0.8 - t * 1.2) : 0
-      const targetLabelY = isOpen ? -1.5 : -0.8
-      labelX.current = THREE.MathUtils.lerp(labelX.current, targetLabelX, 0.04)
-      labelY.current = THREE.MathUtils.lerp(labelY.current, targetLabelY, 0.04)
-      labelRef.current.position.x = labelX.current
-      labelRef.current.position.y = labelY.current
     }
   })
 
@@ -160,7 +145,7 @@ export default function ExperienceSection({ hoveredSection, openSection, toggleS
 
   useEffect(() => {
     if (!isOpen) return
-    window.addEventListener('wheel', onWheel)
+    window.addEventListener('wheel', onWheel, { passive: true })
     window.addEventListener('mousedown', onMouseDown)
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('mouseup', onMouseUp)

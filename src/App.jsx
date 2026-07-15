@@ -31,7 +31,6 @@ class ErrorBoundary extends Component {
 
 export default function App() {
   const mouseParallax = useMouseParallax()
-  const hoveredSection = useRef('none')
   const [openSection, setOpenSection] = useState(null)
   const closeLock = useRef(0)
   const vs = useViewportScale()
@@ -46,8 +45,6 @@ export default function App() {
   const lockClose = useCallback(() => {
     closeLock.current = Date.now() + 1200
   }, [])
-
-  const closeSection = useCallback(() => {}, [])
 
   useEffect(() => {
     function handleClick(e) {
@@ -78,10 +75,7 @@ export default function App() {
         >
           <Scene
             mouseParallax={mouseParallax}
-            hoveredSection={hoveredSection}
             openSection={openSection}
-            toggleSection={toggleSection}
-            closeSection={closeSection}
             lockClose={lockClose}
             vs={vs}
           />

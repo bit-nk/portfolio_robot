@@ -6,9 +6,7 @@ import EducationSection from '../sections/EducationSection'
 import SkillsSection from '../sections/SkillsSection'
 import ContactSection from '../sections/ContactSection'
 
-function lerp(a, b, t) { return a + (b - a) * t }
-
-export default function Scene({ mouseParallax, hoveredSection, openSection, toggleSection, closeSection, lockClose, vs }) {
+export default function Scene({ mouseParallax, openSection, lockClose, vs }) {
   const t = vs.vw
 
   return (
@@ -17,16 +15,16 @@ export default function Scene({ mouseParallax, hoveredSection, openSection, togg
       <directionalLight position={[10, 10, 5]} intensity={0.5} color="#a0c4ff" />
       <hemisphereLight args={['#0a1628', '#060c18', 0.2]} />
 
-      <CameraRig mouseParallax={mouseParallax} hoveredSection={hoveredSection} openSection={openSection} vs={vs} />
+      <CameraRig mouseParallax={mouseParallax} openSection={openSection} vs={vs} />
 
       <Particles count={t > 0.5 ? 100 : 50} />
 
       <IntroSection vs={vs} />
 
-      <ExperienceSection hoveredSection={hoveredSection} openSection={openSection} toggleSection={toggleSection} lockClose={lockClose} vs={vs} />
-      <EducationSection hoveredSection={hoveredSection} openSection={openSection} toggleSection={toggleSection} lockClose={lockClose} vs={vs} />
-      <SkillsSection hoveredSection={hoveredSection} openSection={openSection} toggleSection={toggleSection} lockClose={lockClose} vs={vs} />
-      <ContactSection hoveredSection={hoveredSection} openSection={openSection} toggleSection={toggleSection} lockClose={lockClose} vs={vs} />
+      <ExperienceSection openSection={openSection} lockClose={lockClose} vs={vs} />
+      <EducationSection openSection={openSection} lockClose={lockClose} vs={vs} />
+      <SkillsSection openSection={openSection} lockClose={lockClose} vs={vs} />
+      <ContactSection openSection={openSection} vs={vs} />
     </>
   )
 }

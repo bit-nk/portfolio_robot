@@ -2,7 +2,6 @@ import { useRef, useState, useEffect, useCallback } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import { skills } from '../../utils/data'
-import * as THREE from 'three'
 
 function SliderCard({ data, index, total, activeIndex, cardGap }) {
   const isActive = index === activeIndex
@@ -47,9 +46,8 @@ function SliderCard({ data, index, total, activeIndex, cardGap }) {
   )
 }
 
-export default function SkillsSection({ hoveredSection, openSection, toggleSection, lockClose, vs }) {
+export default function SkillsSection({ openSection, lockClose, vs }) {
   const t = vs.vw
-  const isHovered = useRef(false)
   const [activeIndex, setActiveIndex] = useState(0)
   const isOpen = openSection === 'skills'
 
@@ -143,7 +141,7 @@ export default function SkillsSection({ hoveredSection, openSection, toggleSecti
 
   useEffect(() => {
     if (!isOpen) return
-    window.addEventListener('wheel', onWheel)
+    window.addEventListener('wheel', onWheel, { passive: true })
     window.addEventListener('mousedown', onMouseDown)
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('mouseup', onMouseUp)

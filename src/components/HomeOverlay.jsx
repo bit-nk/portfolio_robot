@@ -4,7 +4,6 @@ const ABOUT_TEXT = "Software Engineer with 5+ years shipping production systems 
 
 function TypeWriter({ text, speed = 18, delay = 300 }) {
   const [displayed, setDisplayed] = useState('')
-  const [cursor, setCursor] = useState(true)
   const [done, setDone] = useState(false)
   const [glitchChar, setGlitchChar] = useState('')
   const idx = useRef(0)
@@ -15,8 +14,9 @@ function TypeWriter({ text, speed = 18, delay = 300 }) {
     setDisplayed('')
     setDone(false)
 
+    let interval
     const startTimer = setTimeout(() => {
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         if (idx.current >= text.length) {
           clearInterval(interval)
           setDone(true)
@@ -31,18 +31,16 @@ function TypeWriter({ text, speed = 18, delay = 300 }) {
           idx.current++
         }, speed / 3)
       }, speed)
-      return () => clearInterval(interval)
     }, delay)
 
-    const cursorBlink = setInterval(() => setCursor(c => !c), 400)
-    return () => { clearTimeout(startTimer); clearInterval(cursorBlink) }
+    return () => { clearTimeout(startTimer); clearInterval(interval) }
   }, [text, speed, delay])
 
   return (
     <span className="typewriter-text">
       {displayed}
       {!done && glitchChar && <span className="typewriter-glitch">{glitchChar}</span>}
-      <span className={`typewriter-cursor ${cursor ? '' : 'off'}`}>_</span>
+      <span className="typewriter-cursor">_</span>
     </span>
   )
 }
@@ -54,15 +52,15 @@ function TagTypeWriter({ text, speed = 40, delay = 0 }) {
   useEffect(() => {
     idx.current = 0
     setDisplayed('')
+    let interval
     const timer = setTimeout(() => {
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         if (idx.current >= text.length) { clearInterval(interval); return }
         setDisplayed(text.slice(0, idx.current + 1))
         idx.current++
       }, speed)
-      return () => clearInterval(interval)
     }, delay)
-    return () => clearTimeout(timer)
+    return () => { clearTimeout(timer); clearInterval(interval) }
   }, [text, speed, delay])
 
   return <span>{displayed}</span>
