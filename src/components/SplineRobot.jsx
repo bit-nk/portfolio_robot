@@ -14,7 +14,6 @@ const TRANSFORMS = {
 
 export default function SplineRobot({ openSection }) {
   const containerRef = useRef(null)
-  const innerRef = useRef(null)
 
   useEffect(() => {
     const el = containerRef.current
@@ -49,9 +48,8 @@ export default function SplineRobot({ openSection }) {
     : 'translate(0%, 0%) scale(1)'
 
   return (
-    <div className="spline-layer" ref={containerRef}>
+    <div className="spline-layer" ref={containerRef} aria-hidden="true">
       <div
-        ref={innerRef}
         style={{
           width: '100%',
           height: '100%',

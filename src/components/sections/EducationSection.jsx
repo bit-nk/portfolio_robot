@@ -1,9 +1,6 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
-import { useFrame } from '@react-three/fiber'
 import { Html } from '@react-three/drei'
 import { education } from '../../utils/data'
-
-// Horizontal spacing — will be scaled by viewport
+import { useCardSlider } from '../../hooks/useCardSlider'
 
 function SliderCard({ data, index, total, activeIndex, cardGap }) {
   const isActive = index === activeIndex
@@ -34,7 +31,7 @@ function SliderCard({ data, index, total, activeIndex, cardGap }) {
               <div className="holo-footer">
                 <span className="holo-scroll-label">
                   <span className="scroll-icon">⟳</span>
-                  <span className="desktop-hint">scroll or drag to switch</span>
+                  <span className="desktop-hint">scroll, drag or ← → to switch</span>
                   <span className="mobile-hint">swipe to switch</span>
                 </span>
               </div>
@@ -48,115 +45,10 @@ function SliderCard({ data, index, total, activeIndex, cardGap }) {
 
 export default function EducationSection({ openSection, lockClose, vs }) {
   const t = vs.vw
-  const [activeIndex, setActiveIndex] = useState(0)
   const isOpen = openSection === 'education'
-
-  const sliderRef = useRef()
-  const targetX = useRef(0)
-  const currentX = useRef(0)
-
   const total = education.length
-  const cardGap = 3 + t * 1
-
-  useEffect(() => {
-    if (isOpen) {
-      setActiveIndex(0)
-      targetX.current = 0
-      currentX.current = 0
-    }
-  }, [isOpen])
-
-  useEffect(() => {
-    targetX.current = -activeIndex * cardGap
-  }, [activeIndex, cardGap])
-
-  useFrame((_, delta) => {
-    if (!sliderRef.current || !isOpen) return
-    const factor = 1 - Math.exp(-(vs.isMobile ? 5 : 7) * delta)
-    currentX.current += (targetX.current - currentX.current) * factor
-    if (Math.abs(currentX.current - targetX.current) < 0.02) {
-      currentX.current = targetX.current
-    }
-    sliderRef.current.position.x = currentX.current
-  })
-
-  const scrollCooldown = useRef(false)
-
-  const goNext = useCallback(() => {
-    if (scrollCooldown.current) return
-    scrollCooldown.current = true
-    setTimeout(() => { scrollCooldown.current = false }, 400)
-    lockClose()
-    setActiveIndex((prev) => Math.min(prev + 1, total - 1))
-  }, [total, lockClose])
-
-  const goPrev = useCallback(() => {
-    if (scrollCooldown.current) return
-    scrollCooldown.current = true
-    setTimeout(() => { scrollCooldown.current = false }, 400)
-    lockClose()
-    setActiveIndex((prev) => Math.max(prev - 1, 0))
-  }, [lockClose])
-
-  const wheelCooldown = useRef(false)
-  const onWheel = useCallback((e) => {
-    if (!isOpen || wheelCooldown.current) return
-    if (Math.abs(e.deltaY) > 10) {
-      wheelCooldown.current = true
-      setTimeout(() => { wheelCooldown.current = false }, 500)
-      if (e.deltaY > 0) goNext()
-      else goPrev()
-    }
-  }, [isOpen, goNext, goPrev])
-
-  const isDragging = useRef(false)
-  const dragStartX = useRef(0)
-  const onMouseDown = useCallback((e) => {
-    if (!isOpen) return
-    isDragging.current = true
-    dragStartX.current = e.clientX
-  }, [isOpen])
-
-  const onMouseMove = useCallback((e) => {
-    if (!isOpen || !isDragging.current) return
-    const dx = e.clientX - dragStartX.current
-    if (dx > 80) { dragStartX.current = e.clientX; lockClose(); goNext() }
-    else if (dx < -80) { dragStartX.current = e.clientX; lockClose(); goPrev() }
-  }, [isOpen, goNext, goPrev, lockClose])
-
-  const onMouseUp = useCallback(() => { isDragging.current = false }, [])
-
-  const touchStart = useRef({ x: 0 })
-  const onTouchStart = useCallback((e) => {
-    if (!isOpen) return
-    touchStart.current = { x: e.touches[0].clientX }
-  }, [isOpen])
-
-  const onTouchEnd = useCallback((e) => {
-    if (!isOpen) return
-    const dx = e.changedTouches[0].clientX - touchStart.current.x
-    if (dx > 40) { lockClose(); goNext() }
-    else if (dx < -40) { lockClose(); goPrev() }
-  }, [isOpen, goNext, goPrev, lockClose])
-
-  useEffect(() => {
-    if (!isOpen) return
-    window.addEventListener('wheel', onWheel, { passive: true })
-    window.addEventListener('mousedown', onMouseDown)
-    window.addEventListener('mousemove', onMouseMove)
-    window.addEventListener('mouseup', onMouseUp)
-    window.addEventListener('touchstart', onTouchStart, { passive: true })
-    window.addEventListener('touchend', onTouchEnd)
-    return () => {
-      window.removeEventListener('wheel', onWheel)
-      window.removeEventListener('mousedown', onMouseDown)
-      window.removeEventListener('mousemove', onMouseMove)
-      window.removeEventListener('mouseup', onMouseUp)
-      window.removeEventListener('touchstart', onTouchStart)
-      window.removeEventListener('touchend', onTouchEnd)
-    }
-  }, [isOpen, onWheel, onMouseDown, onMouseMove, onMouseUp, onTouchStart, onTouchEnd])
-
+  const cardGap = 3 + t
+  const { sliderRef, activeIndex } = useCardSlider({ isOpen, total, cardGap, lockClose, isMobile: vs.isMobile })
 
   return (
     <group position={[-1 - t * 4, 3.2 - t * 0.2, 4 - t * 2]}>

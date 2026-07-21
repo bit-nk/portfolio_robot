@@ -10,7 +10,7 @@ export default function Navbar({ onNavigate, openSection }) {
   return (
     <nav className="cyber-nav">
       <div className="cyber-nav-left">
-        <span className="cyber-logo" onClick={() => onNavigate(null)}>NK</span>
+        <button className="cyber-logo" onClick={() => onNavigate(null)} aria-label="Home">NK</button>
       </div>
       <div className="cyber-nav-center">
         {links.map((l) => (

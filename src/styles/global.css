@@ -53,8 +53,11 @@ html, body, #root {
   color: #00f0ff;
   text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
   padding: 6px 14px;
+  border: none;
   border-right: 1px solid rgba(100, 116, 139, 0.3);
   margin-right: 2px;
+  background: none;
+  cursor: pointer;
 }
 
 .cyber-nav-center {
@@ -373,7 +376,7 @@ html, body, #root {
   font-family: 'Inter', sans-serif;
   font-size: 15px;
   line-height: 1.8;
-  color: rgba(200, 214, 229, 0.6);
+  color: rgba(200, 214, 229, 0.85);
   margin-bottom: 18px;
   min-height: 80px;
 }
@@ -405,7 +408,7 @@ html, body, #root {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 14px;
   letter-spacing: 0.1em;
-  color: rgba(200, 214, 229, 0.5);
+  color: rgba(200, 214, 229, 0.85);
   cursor: pointer;
   padding: 0;
   transition: all 0.25s ease;
@@ -444,27 +447,29 @@ html, body, #root {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.15em;
-  color: #00f0ff;
-  background: rgba(0, 240, 255, 0.04);
+  /* Deliberate warm accent: cyan is the ambient system/HUD colour, amber marks
+     the one human action — "get in touch". Matches the warm contact-card hues. */
+  color: #ffb043;
+  background: rgba(255, 176, 67, 0.05);
   border: none;
   padding: 0;
   cursor: pointer;
   transition: all 0.25s ease;
   z-index: 2;
-  text-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
+  text-shadow: 0 0 8px rgba(255, 176, 67, 0.35);
 }
 
 .home-cta:hover {
   color: #fff;
-  text-shadow: 0 0 12px rgba(0, 240, 255, 0.5);
+  text-shadow: 0 0 12px rgba(255, 176, 67, 0.6);
 }
 
 /* Scope rings — converge from big to small then fade */
 .scope-ring {
   position: absolute;
   border-radius: 50%;
-  border: 1.5px solid rgba(0, 255, 100, 0.5);
-  box-shadow: 0 0 10px rgba(0, 255, 100, 0.1);
+  border: 1.5px solid rgba(255, 176, 67, 0.5);
+  box-shadow: 0 0 10px rgba(255, 176, 67, 0.1);
   pointer-events: none;
   animation: scopeConverge 3s ease-in-out infinite;
 }
@@ -481,11 +486,11 @@ html, body, #root {
     left: 50%;
     transform: translate(-50%, -50%);
     opacity: 0;
-    border-color: rgba(0, 255, 100, 0.15);
+    border-color: rgba(255, 176, 67, 0.15);
   }
   20% {
     opacity: 0.7;
-    border-color: rgba(0, 255, 100, 0.5);
+    border-color: rgba(255, 176, 67, 0.5);
   }
   80% {
     width: 50px;
@@ -494,7 +499,7 @@ html, body, #root {
     left: 50%;
     transform: translate(-50%, -50%);
     opacity: 0.9;
-    border-color: rgba(0, 255, 100, 0.7);
+    border-color: rgba(255, 176, 67, 0.7);
   }
   100% {
     width: 30px;
@@ -503,7 +508,7 @@ html, body, #root {
     left: 50%;
     transform: translate(-50%, -50%);
     opacity: 0;
-    border-color: rgba(0, 255, 100, 0.2);
+    border-color: rgba(255, 176, 67, 0.2);
   }
 }
 
@@ -514,7 +519,7 @@ html, body, #root {
   left: 10px;
   right: 10px;
   height: 1px;
-  background: linear-gradient(90deg, rgba(0, 255, 100, 0.4), transparent 30%, transparent 70%, rgba(0, 255, 100, 0.4));
+  background: linear-gradient(90deg, rgba(255, 176, 67, 0.4), transparent 30%, transparent 70%, rgba(255, 176, 67, 0.4));
   transform: translateY(-0.5px);
   pointer-events: none;
   z-index: 1;
@@ -526,138 +531,12 @@ html, body, #root {
   top: 10px;
   bottom: 10px;
   width: 1px;
-  background: linear-gradient(180deg, rgba(0, 255, 100, 0.4), transparent 30%, transparent 70%, rgba(0, 255, 100, 0.4));
+  background: linear-gradient(180deg, rgba(255, 176, 67, 0.4), transparent 30%, transparent 70%, rgba(255, 176, 67, 0.4));
   transform: translateX(-0.5px);
   pointer-events: none;
   z-index: 1;
 }
 
-/* ═══════════════════════════════════════
-   Top-right — Game HUD stats
-   ═══════════════════════════════════════ */
-.home-hud {
-  position: absolute;
-  top: 70px;
-  right: 120px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  pointer-events: none;
-  width: 180px;
-}
-
-.hud-row {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.hud-row-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.hud-label {
-  font-family: 'Space Grotesk', monospace;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.25em;
-  color: rgba(0, 240, 255, 0.35);
-}
-
-.hud-val {
-  font-family: 'Space Grotesk', monospace;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: rgba(0, 240, 255, 0.4);
-}
-
-.hud-bar-track {
-  width: 180px;
-  height: 16px;
-  background: rgba(0, 240, 255, 0.04);
-  overflow: visible;
-  position: relative;
-  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-}
-
-.hud-bar-fill {
-  height: 100%;
-  animation: barGrow 1.5s ease-out forwards;
-}
-
-.hud-bar-fill.hp {
-  width: 98%;
-  background: linear-gradient(90deg, rgba(0, 240, 255, 0.15), rgba(0, 240, 255, 0.3));
-  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-}
-.hud-bar-fill.mp {
-  width: 74%;
-  background: linear-gradient(90deg, rgba(0, 240, 255, 0.12), rgba(0, 240, 255, 0.25));
-  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-}
-.hud-bar-fill.xp {
-  width: 50%;
-  background: linear-gradient(90deg, rgba(0, 240, 255, 0.1), rgba(0, 240, 255, 0.22));
-  clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-}
-
-/* Animated diagonal scanline — / direction, only within filled portion */
-.hud-bar-scanline {
-  position: absolute;
-  top: -1px;
-  left: 0;
-  width: 3px;
-  height: calc(100% + 2px);
-  transform: skewX(-27deg);
-  background: #00f0ff;
-  box-shadow: 0 0 8px rgba(0, 240, 255, 0.6), 0 0 16px rgba(0, 240, 255, 0.15);
-  opacity: 0;
-  animation: barPing 3s ease-in-out infinite;
-}
-
-/* --fill-end in px of the 180px track (96% / 72% / 48%) so the ping can ride transform instead of `left` */
-.hud-row:nth-child(1) .hud-bar-scanline { --fill-end: 172.8px; }
-.hud-row:nth-child(2) .hud-bar-scanline { --fill-end: 129.6px; animation-delay: 1s; }
-.hud-row:nth-child(3) .hud-bar-scanline { --fill-end: 86.4px; animation-delay: 2s; }
-
-@keyframes barPing {
-  0% { transform: translateX(0) skewX(-27deg); opacity: 0; }
-  10% { opacity: 0.8; }
-  80% { transform: translateX(var(--fill-end)) skewX(-27deg); opacity: 0.8; }
-  100% { transform: translateX(var(--fill-end)) skewX(-27deg); opacity: 0; }
-}
-
-@keyframes barGrow {
-  from { width: 0; }
-}
-
-/* Ammo */
-.hud-ammo {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 6px;
-}
-
-.hud-bullets {
-  display: flex;
-  gap: 5px;
-}
-
-.hud-bullet {
-  color: rgba(0, 240, 255, 0.35);
-  filter: drop-shadow(0 0 3px rgba(0, 240, 255, 0.2));
-  width: 18px;
-  height: 18px;
-}
-
-.hud-bullet.spent {
-  color: rgba(0, 240, 255, 0.06);
-  filter: none;
-}
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
@@ -665,12 +544,9 @@ html, body, #root {
   .home-info-text { font-size: 11px; }
   .home-status-left { font-size: 10px; display: none; }
   .home-left-decor { display: none; }
-  .home-hud { display: none; }
   .home-cta-wrapper { bottom: 20px; right: 20px; width: 110px; height: 110px; }
   .home-cta { font-size: 9px; }
   .home-info-panel { max-width: 280px; }
-  .home-status-left, .home-status-right { display: none; }
-  .home-coords { top: 60px; right: 20px; font-size: 8px; }
 }
 
 @media (max-width: 480px) {
@@ -774,7 +650,9 @@ html, body, #root {
   letter-spacing: 0.06em;
   color: #00f0ff;
   line-height: 1;
-  text-shadow: 0 0 20px rgba(0, 240, 255, 0.4), 0 0 60px rgba(0, 240, 255, 0.15), 0 0 100px rgba(0, 240, 255, 0.05);
+  margin: 0;
+  /* dark halo layer keeps it readable where it overlaps the robot on small screens */
+  text-shadow: 0 0 20px rgba(0, 240, 255, 0.4), 0 0 60px rgba(0, 240, 255, 0.15), 0 2px 14px rgba(0, 0, 0, 0.55);
 }
 
 .intro-divider {
@@ -790,7 +668,8 @@ html, body, #root {
   letter-spacing: 0.3em;
   color: #00f0ff;
   margin-top: 0;
-  text-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+  /* dark halo keeps the subtitle legible over the glossy robot head behind it */
+  text-shadow: 0 0 12px rgba(0, 240, 255, 0.45), 0 2px 10px rgba(0, 0, 0, 0.85);
 }
 
 /* ═══════════════════════════════════════
@@ -809,13 +688,9 @@ html, body, #root {
   font-family: 'Inter', sans-serif;
   box-shadow: 0 2px 30px rgba(0, 240, 255, 0.06), inset 0 0 30px rgba(0, 240, 255, 0.02);
   clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
-}
-
-.holo-screen {
   transition: max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   vertical-align: top;
   max-height: 2000px;
-  overflow: hidden;
 }
 
 .holo-inactive {
@@ -840,11 +715,6 @@ html, body, #root {
 
 .holo-screen, .holo-screen * {
   pointer-events: auto;
-}
-
-.contact-orb-label {
-  position: relative;
-  z-index: 5;
 }
 
 /* Scan line */
@@ -873,12 +743,10 @@ html, body, #root {
 /* Cyan variant */
 .holo-screen.cyan { border-color: rgba(6, 182, 212, 0.25); }
 .holo-screen.cyan::before { background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.2), transparent); }
-.holo-screen.cyan .holo-counter, .holo-screen.cyan .holo-date, .holo-screen.cyan .holo-btn { color: rgba(6, 182, 212, 0.6); }
+.holo-screen.cyan .holo-counter, .holo-screen.cyan .holo-date { color: rgba(6, 182, 212, 0.6); }
 .holo-screen.cyan .holo-dot.active { background: #06b6d4; box-shadow: 0 0 6px rgba(6, 182, 212, 0.6); }
 .holo-screen.cyan .holo-details li::before { color: #06b6d4; }
-.holo-screen.cyan .holo-btn:hover:not(.disabled) { background: rgba(6, 182, 212, 0.1); border-color: rgba(6, 182, 212, 0.4); color: #06b6d4; }
 
-@keyframes holoIn { from { opacity: 0; transform: scaleY(0.9) scaleX(0.95); } to { opacity: 1; transform: scaleY(1) scaleX(1); } }
 @keyframes scanLine { from { top: -1px; } to { top: 100%; } }
 
 /* Header */
@@ -934,7 +802,7 @@ html, body, #root {
 
 .holo-company {
   font-size: 13px;
-  color: rgba(200, 214, 229, 0.5);
+  color: rgba(200, 214, 229, 0.7);
   margin-bottom: 8px;
 }
 
@@ -967,7 +835,7 @@ html, body, #root {
 
 .holo-school {
   font-size: 13px;
-  color: rgba(200, 214, 229, 0.5);
+  color: rgba(200, 214, 229, 0.7);
   margin-bottom: 4px;
 }
 
@@ -979,7 +847,7 @@ html, body, #root {
 
 .holo-project {
   font-size: 11px;
-  color: rgba(200, 214, 229, 0.4);
+  color: rgba(200, 214, 229, 0.7);
   font-style: italic;
   margin-top: 5px;
 }
@@ -1020,27 +888,6 @@ html, body, #root {
   padding-top: 6px;
   border-top: 1px solid rgba(0, 240, 255, 0.1);
 }
-
-.holo-btn {
-  background: none;
-  border: 1px solid rgba(0, 240, 255, 0.15);
-  color: rgba(0, 240, 255, 0.5);
-  font-size: 8px;
-  letter-spacing: 0.15em;
-  padding: 3px 8px;
-  border-radius: 0;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: 'Space Grotesk', monospace;
-}
-
-.holo-btn:hover:not(.disabled) {
-  background: rgba(0, 240, 255, 0.08);
-  border-color: rgba(0, 240, 255, 0.4);
-  color: #00f0ff;
-}
-
-.holo-btn.disabled { opacity: 0.2; cursor: default; }
 
 .holo-scroll-label {
   font-size: 8px;
@@ -1127,7 +974,7 @@ html, body, #root {
   font-family: 'Inter', sans-serif;
   font-size: 11px;
   font-weight: 400;
-  color: rgba(200, 214, 229, 0.45);
+  color: rgba(200, 214, 229, 0.7);
   letter-spacing: 0.02em;
 }
 
@@ -1172,15 +1019,11 @@ html, body, #root {
   .holo-screen.cyan .holo-meta, .holo-screen.cyan .holo-project { font-size: 16px; }
   .holo-skill-category { font-size: 22px; }
   .holo-skill-tag { font-size: 14px; padding: 6px 12px; }
-  .holo-btn { font-size: 12px; padding: 8px 14px; min-height: 32px; min-width: 60px; }
   .holo-scroll-label { font-size: 11px; }
   .holo-footer { margin-top: 12px; padding-top: 10px; }
   .holo-screen.cyan .holo-body { padding-bottom: 0; }
   .holo-screen.cyan .holo-footer { margin-top: 8px; }
   .holo-header { margin-bottom: 14px; padding-bottom: 10px; }
-
-
-  .hotspot-label { font-size: 12px; letter-spacing: 0.15em; padding: 6px 16px; }
 
   /* Home overlay — move items higher so they don't get cut off */
   .home-info-panel { top: auto; bottom: 130px; left: 20px; transform: none; max-width: 280px; }
@@ -1214,4 +1057,32 @@ html, body, #root {
 
   .home-info-panel { max-width: 220px; bottom: 120px; }
   .home-cta-wrapper { bottom: 100px; }
+}
+
+/* ═══════════════════════════════════════
+   Accessibility
+   ═══════════════════════════════════════ */
+
+/* Keyboard focus. Interactive controls use clip-path, which clips an outset
+   outline to nothing — so use an INSET ring that lives inside the clip. */
+:where(.cyber-nav-link, .cyber-btn-outline, .contact-card):focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px #00f0ff;
+}
+:where(.cyber-logo, .home-cta, .home-info-link):focus-visible {
+  outline: 2px solid #00f0ff;
+  outline-offset: 2px;
+}
+
+/* Respect the OS "reduce motion" setting: collapse the ~15 perpetual HUD
+   animations and all transitions to a single static frame. The cyberpunk look
+   survives as crisp still chrome. (WebGL robot/particle motion is gated in JS.) */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

@@ -1,9 +1,10 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import * as THREE from 'three'
+import { prefersReducedMotion } from '../../utils/motion'
 
 export default function Particles({ count = 600 }) {
   const ref = useRef()
+  const reduce = prefersReducedMotion()
 
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3)
@@ -16,7 +17,7 @@ export default function Particles({ count = 600 }) {
   }, [count])
 
   useFrame(({ clock }, delta) => {
-    if (!ref.current) return
+    if (reduce || !ref.current) return
     const t = clock.getElapsedTime()
     const posArr = ref.current.geometry.attributes.position.array
     for (let i = 0; i < count; i++) {

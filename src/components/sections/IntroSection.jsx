@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Html, Float } from '@react-three/drei'
+import { prefersReducedMotion } from '../../utils/motion'
 
 function lerp(a, b, t) { return a + (b - a) * t }
 
@@ -8,8 +9,10 @@ export default function IntroSection({ vs }) {
   const ringRef = useRef()
   const ring2Ref = useRef()
   const t = vs.vw
+  const reduce = prefersReducedMotion()
 
   useFrame(({ clock }) => {
+    if (reduce) return
     const time = clock.getElapsedTime()
     if (ringRef.current) ringRef.current.rotation.z = time * 0.1
     if (ring2Ref.current) ring2Ref.current.rotation.z = -time * 0.08
@@ -17,11 +20,11 @@ export default function IntroSection({ vs }) {
 
   return (
     <group position={[0, lerp(5.2, 5, t), 2]}>
-      <Float speed={1.2} rotationIntensity={0.03} floatIntensity={0.15}>
+      <Float speed={reduce ? 0 : 1.2} rotationIntensity={reduce ? 0 : 0.03} floatIntensity={reduce ? 0 : 0.15}>
         <Html transform distanceFactor={lerp(2.2, 2, t)} center>
           <div className="intro-title-card">
-            <div className="intro-name">NIRVIK KC</div>
-            <div className="intro-divider"></div>
+            <h1 className="intro-name">NIRVIK KC</h1>
+            <div className="intro-divider" aria-hidden="true"></div>
             <div className="intro-role">SOFTWARE ENGINEER</div>
           </div>
         </Html>

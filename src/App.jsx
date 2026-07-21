@@ -52,8 +52,15 @@ export default function App() {
       if (Date.now() < closeLock.current) return
       setOpenSection(null)
     }
+    function handleKey(e) {
+      if (e.key === 'Escape') setOpenSection(null)
+    }
     window.addEventListener('click', handleClick)
-    return () => window.removeEventListener('click', handleClick)
+    window.addEventListener('keydown', handleKey)
+    return () => {
+      window.removeEventListener('click', handleClick)
+      window.removeEventListener('keydown', handleKey)
+    }
   }, [])
 
   return (
@@ -62,11 +69,11 @@ export default function App() {
         <Navbar onNavigate={toggleSection} openSection={openSection} />
         <SplineRobot openSection={openSection} />
 
-        {/* Corner frame brackets */}
-        <div className="cyber-frame tl"></div>
-        <div className="cyber-frame tr"></div>
-        <div className="cyber-frame bl"></div>
-        <div className="cyber-frame br"></div>
+        {/* Corner frame brackets — decorative */}
+        <div className="cyber-frame tl" aria-hidden="true"></div>
+        <div className="cyber-frame tr" aria-hidden="true"></div>
+        <div className="cyber-frame bl" aria-hidden="true"></div>
+        <div className="cyber-frame br" aria-hidden="true"></div>
         <Canvas
           camera={{ fov, near: 0.1, far: 100, position: [0, 3, 12] }}
           gl={{ antialias: false, alpha: true, powerPreference: 'high-performance' }}
