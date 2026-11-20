@@ -79,8 +79,17 @@ export default function HomeOverlay({ onNavigate, visible }) {
       {/* Grid pattern */}
       <div className="home-grid" aria-hidden="true"></div>
 
-      {/* Left side — mini radar */}
+      {/* Left side status readout */}
+      <div className="home-status-left" aria-hidden="true">
+        <span>SYS_ONLINE</span>
+        <span className="home-status-dot"></span>
+        <span>PORTFOLIO_V2.0</span>
+      </div>
+
+
+      {/* Left side — mini radar + data bars */}
       <div className="home-left-decor" aria-hidden="true">
+        {/* Mini radar */}
         <div className="mini-radar">
           <div className="mini-radar-ring"></div>
           <div className="mini-radar-ring inner"></div>
@@ -89,6 +98,15 @@ export default function HomeOverlay({ onNavigate, visible }) {
           <div className="mini-radar-dot" style={{ top: '55%', left: '35%' }}></div>
           <div className="mini-radar-dot" style={{ top: '70%', left: '65%' }}></div>
         </div>
+
+        {/* System bars */}
+        <div className="sys-bars">
+          <div className="sys-bar-row"><span className="sys-bar-label">NET</span><div className="sys-bar-track"><div className="sys-bar-fill" style={{ '--w': '78%' }}></div></div></div>
+          <div className="sys-bar-row"><span className="sys-bar-label">CPU</span><div className="sys-bar-track"><div className="sys-bar-fill" style={{ '--w': '45%' }}></div></div></div>
+          <div className="sys-bar-row"><span className="sys-bar-label">MEM</span><div className="sys-bar-track"><div className="sys-bar-fill" style={{ '--w': '62%' }}></div></div></div>
+        </div>
+
+        <div className="sys-uptime">UPTIME 2847:03:12</div>
       </div>
 
       {/* Bottom-left info panel */}

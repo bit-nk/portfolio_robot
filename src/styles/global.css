@@ -186,13 +186,44 @@ html, body, #root {
   to { transform: translateY(100vh); }
 }
 
+/* Right status readout */
+.home-status-left {
+  position: absolute;
+  bottom: 50%;
+  right: 56px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: 'Space Grotesk', monospace;
+  font-size: 13px;
+  letter-spacing: 0.25em;
+  color: rgba(0, 240, 255, 0.3);
+  text-transform: uppercase;
+  writing-mode: vertical-lr;
+}
+
+.home-status-dot {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background: #00f0ff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(0, 240, 255, 0.5);
+  animation: pulseHint 2s ease-in-out infinite;
+  align-self: center;
+}
+
+
 /* ═══════════════════════════════════════
-   Left side decoration — radar
+   Left side decorations — radar + bars
    ═══════════════════════════════════════ */
 .home-left-decor {
   position: absolute;
   bottom: 50px;
   left: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   pointer-events: none;
 }
 
@@ -260,6 +291,62 @@ html, body, #root {
 @keyframes radarBlink {
   0%, 60%, 100% { opacity: 0.2; }
   70%, 90% { opacity: 1; }
+}
+
+/* System bars */
+.sys-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 80px;
+}
+
+.sys-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sys-bar-label {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 7px;
+  letter-spacing: 0.15em;
+  color: rgba(0, 240, 255, 0.3);
+  width: 22px;
+  flex-shrink: 0;
+}
+
+.sys-bar-track {
+  flex: 1;
+  height: 3px;
+  background: rgba(0, 240, 255, 0.08);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.sys-bar-fill {
+  height: 100%;
+  width: var(--w);
+  background: linear-gradient(90deg, rgba(0, 240, 255, 0.3), rgba(0, 240, 255, 0.6));
+  border-radius: 1px;
+  animation: barFlicker 4s ease-in-out infinite;
+}
+
+.sys-bar-row:nth-child(2) .sys-bar-fill { animation-delay: 1.3s; }
+.sys-bar-row:nth-child(3) .sys-bar-fill { animation-delay: 2.6s; }
+
+@keyframes barFlicker {
+  0%, 100% { opacity: 0.7; }
+  30% { opacity: 1; }
+  50% { opacity: 0.5; }
+  70% { opacity: 0.9; }
+}
+
+.sys-uptime {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 7px;
+  letter-spacing: 0.2em;
+  color: rgba(0, 240, 255, 0.2);
 }
 
 /* Info panel — vertically centered, left side */
@@ -455,6 +542,7 @@ html, body, #root {
 @media (max-width: 768px) {
   .home-info-panel { top: auto; bottom: 80px; left: 20px; transform: none; max-width: 240px; }
   .home-info-text { font-size: 11px; }
+  .home-status-left { font-size: 10px; display: none; }
   .home-left-decor { display: none; }
   .home-cta-wrapper { bottom: 20px; right: 20px; width: 110px; height: 110px; }
   .home-cta { font-size: 9px; }
@@ -943,6 +1031,7 @@ html, body, #root {
   .home-cta-wrapper { bottom: 110px; right: 20px; width: 110px; height: 110px; }
   .home-cta { font-size: 10px; }
   .home-left-decor { display: none; }
+  .home-status-left { display: none; }
 
   /* Contact cards */
   .contact-card { padding: 16px 24px; min-width: 110px; }
