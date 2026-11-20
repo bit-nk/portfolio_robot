@@ -1,0 +1,20 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "space grotesk",
+        "createdAt": "2026-11-20T17:00:28.669Z",
+        "reason": "project CLAUDE.md declares Space Grotesk + Inter the intentional brand type for this cyberpunk portfolio"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-11-20T17:00:28.686Z",
+        "reason": "project CLAUDE.md declares Space Grotesk + Inter the intentional brand type for this cyberpunk portfolio"
+      }
+    ]
+  }
+}
